@@ -1,0 +1,48 @@
+{
+  "dependencies": {
+    "@intern/factory": "workspace:^",
+    "big.js": "^6.2.1",
+    "lodash": "^4.17.21",
+    "mysql2": "^3.9.3",
+    "reflect-metadata": "^0.2.2",
+    "sequelize": "^6.37.2",
+    "sequelize-typescript": "^2.1.6",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/big.js": "^6.1.6",
+    "@types/bluebird": "^3.5.38",
+    "@types/jest": "^29.5.1",
+    "@types/lodash": "^4.17.0",
+    "@types/node": "^22.13.13",
+    "@types/sinon": "^10.0.14",
+    "@types/uuid": "^10.0.0",
+    "@types/validator": "^13.7.15",
+    "del-cli": "^5.0.0",
+    "sinon": "^15.0.4",
+    "ts-node": "^10.9.1",
+    "typescript": "5.7.3"
+  },
+  "engines": {
+    "node": "^22.0.0"
+  },
+  "license": "UNLICENSED",
+  "packageManager": "yarn@4.7.0",
+  "name": "@intern/domain",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json",
+    "check": "yarn lint && yarn prettier",
+    "clean": "del ./lib \"npm-debug.log*\" ./doc ./coverage ./.nyc_output",
+    "test": "yarn check && tsjest",
+    "tsjest": "yarn jest --runInBand",
+    "lint": "eslint --ext .ts src/",
+    "preversion": "yarn clean && yarn build && yarn test",
+    "prepublishOnly": "yarn clean && yarn build && yarn test",
+    "version": "git add -A",
+    "postversion": "git push origin --tags",
+    "prettier": "prettier --check \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.ts\"",
+    "versionup": "node auto-versioning"
+  },
+  "version": "0.0.1"
+}

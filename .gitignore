@@ -1,0 +1,15 @@
+# Dependency directory
+node_modules
+
+# Ignore built ts files
+dst/**/*
+
+# ignore yarn.lock
+.yarn/*
+!.yarn/releases/
+
+# vscode settings
+.vscode
+
+# Ignore local env files
+.env

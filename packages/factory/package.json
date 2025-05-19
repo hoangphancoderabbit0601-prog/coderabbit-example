@@ -1,0 +1,19 @@
+{
+  "name": "@intern/factory",
+  "version": "0.0.1",
+  "engines": {
+    "node": "^22.0.0"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/node": "^22.13.13",
+    "typescript": "5.7.3"
+  },
+  "dependencies": {
+    "setprototypeof": "^1.2.0"
+  },
+  "packageManager": "yarn@4.7.0"
+}

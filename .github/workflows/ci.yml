@@ -1,0 +1,61 @@
+name: CI
+run-name: Test & Build
+on: 
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js (version >=22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '>=22'
+
+      - name: Install dependencies
+        run: yarn install
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (version >=22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '>=22'
+
+      - name: Restore Yarn dependencies from cache
+        run: yarn install --frozen-lockfile
+
+      - name: Run lint and prettier
+        run: yarn lint && yarn prettier
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (version >=22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '>=22'
+
+      - name: Restore Yarn dependencies from cache
+        run: yarn install --frozen-lockfile
+
+      - name: Build API
+        run: yarn build:api
+
+      - name: Build Front
+        run: yarn build:front

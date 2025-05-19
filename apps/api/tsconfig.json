@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "declaration": false,
+    "diagnostics": false,
+    "disableSizeLimit": false,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "isolatedModules": false,
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "module": "commonjs",
+    "newLine": "LF",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitUseStrict": false,
+    "noLib": false,
+    "noResolve": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "../../dst",
+    "preserveConstEnums": false,
+    "pretty": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "stripInternal": false,
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": false,
+    "target": "es6",
+    "baseUrl": "./",
+    "skipLibCheck": true,
+    "paths": {
+      "@factory": [
+        "../../packages/factory/src/index"
+      ],
+      "@factory/*": [
+        "../../packages/factory/src/*"
+      ],
+      "@domain": [
+        "../../packages/domain/src/index"
+      ],
+      "@domain/*": [
+        "../../packages/domain/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*", "../../packages/migration/src",
+  ]
+}

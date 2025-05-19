@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src"],
+  "exclude": ["**/*.spec.ts"],
+  "compilerOptions": {
+    "paths": {
+      "@factory": ["../../node_modules/@intern/factory/src/index"],
+      "@factory/*": ["../../node_modules/@intern/factory/src/*"]
+    }
+  }
+}

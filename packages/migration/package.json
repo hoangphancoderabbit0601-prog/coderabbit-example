@@ -1,0 +1,23 @@
+{
+    "name": "@intern/migration",
+    "version": "0.0.1",
+    "scripts": {
+        "build": "tsc",
+        "clean": "rimraf './dst'",
+        "migrate:up": "yarn clean && yarn build && sequelize db:migrate",
+        "migrate:down": "sequelize db:migrate:undo",
+        "migrate:undo-all": "sequelize db:migrate:undo:all"
+    },
+    "dependencies": {
+        "mysql2": "^3.9.3",
+        "sequelize": "^6.37.2"
+    },
+    "devDependencies": {
+        "@types/bluebird": "^3.5.38",
+        "@types/validator": "^13.7.15",
+        "rimraf": "^6.0.1",
+        "sequelize-cli": "^6.6.2",
+        "typescript": "5.7.3"
+    },
+    "packageManager": "yarn@4.7.0"
+}

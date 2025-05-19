@@ -1,0 +1,5 @@
+dist
+docker
+node_modules
+.*
+apps/front/src/@types/components.d.ts

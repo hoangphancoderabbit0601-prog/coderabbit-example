@@ -1,0 +1,154 @@
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+@custom-variant dark (&:where(.p-dark, .p-dark *));
+
+:root {
+  --body-bg: var(--p-surface-50);
+  --body-text-color: var(--p-surface-900);
+  --card-border: 1px solid var(--border-color);
+  --card-bg: var(--p-surface-0);
+  --border-color: var(--p-surface-200);
+  --text-color: var(--p-surface-700);
+  --overlay-background: #ffffff;
+}
+
+:root[class='p-dark'] {
+  --body-bg: var(--p-surface-950);
+  --body-text-color: var(--p-surface-50);
+  --card-border: 1px solid transparent;
+  --card-bg: var(--p-surface-900);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-color: var(--p-surface-0);
+  --overlay-background: var(--p-surface-900);
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  margin: 0px;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--body-bg);
+  font-weight: normal;
+  color: var(--body-text-color);
+  padding: 1rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: var(--card-border);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.login-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 320px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.flash-message {
+  position: fixed;
+  top: 20px; /* Thay đổi giá trị này */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  max-width: 80%;
+  width: auto;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid solid;
+  transition: all 0.3s ease-out;
+}
+
+.bg-danger {
+  background-color: #dc3545;
+  border-color: #b82e3a;
+}
+
+.bg-success {
+  background-color: #28a745;
+  border-color: #218838;
+}
+
+.bg-info {
+  background-color: #17a2b8;
+  border-color: #138496;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Tự động điều chỉnh cột */
+  gap: 1rem;
+  padding: auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép các cột xuống dòng khi không đủ không gian */
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+
+  > * {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+.col-md-6 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mt-5 {
+  margin-top: 3rem;
+}
+
+.gap-4 {
+  gap: 1.5rem;
+}
+
+.offset-md-6 {
+  margin-left: 50%;
+}
+
+.mt-md-3 {
+  margin-top: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
