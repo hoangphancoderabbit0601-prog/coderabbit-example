@@ -50,7 +50,7 @@ async function main() {
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ limit: '1mb', extended: true }));
 
-  app.use('/api', router(sequelize));
+  app.use('/v1', router(sequelize));
 
   app.listen(PORT, () => console.log(`Run on http://localhost:${PORT}`));
 }

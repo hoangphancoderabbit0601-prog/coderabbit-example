@@ -7,7 +7,7 @@ import authRouter from './auth';
 
 export default function (db: SQLize) {
   const router = Router();
-  router.use('/auth', authRouter(db));
+  router.use('/', authRouter(db));
 
   router.use(jwtAuthentication);
 

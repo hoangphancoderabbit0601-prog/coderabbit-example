@@ -22,11 +22,13 @@ class AuthController extends BaseController {
 
     res.json({
       ...user,
-      token: signToken({
-        id: Number(user.id),
-        name: user.name,
-        positionId: Number(user.positionId),
-      }),
+      token: {
+        accessToken: signToken({
+          id: Number(user.id),
+          name: user.name,
+          positionId: Number(user.position_id),
+        }),
+      },
     });
 
     req.user = <any>user;

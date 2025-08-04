@@ -1,2 +1,2 @@
-export { Group } from './group';
-export { User } from './user';
+export { Customer } from './customer';
+export { Order } from './order';
