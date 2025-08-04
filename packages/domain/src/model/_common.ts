@@ -1,29 +1,22 @@
 import {
-  AutoIncrement,
   Column,
   CreatedAt,
   DataType,
   DeletedAt,
   Model,
-  PrimaryKey,
   UpdatedAt,
 } from 'sequelize-typescript';
 
 export class Common extends Model {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT.UNSIGNED)
-  id!: number | bigint;
-
   @CreatedAt
-  @Column({ field: 'created_date' })
+  @Column({ field: 'created_date', type: DataType.DATE })
   createdDate!: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_date' })
+  @Column({ field: 'updated_date', type: DataType.DATE })
   updatedDate!: Date;
 
   @DeletedAt
-  @Column({ field: 'deleted_date' })
+  @Column({ field: 'deleted_date', type: DataType.DATE })
   deletedDate?: Date;
 }

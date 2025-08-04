@@ -2,12 +2,12 @@ import { DataTypes, literal, QueryInterface } from 'sequelize';
 
 export default {
   up: async (qi: QueryInterface, dataTypes: typeof DataTypes) =>
-    qi.createTable('user', {
+    qi.createTable('customer', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: dataTypes.BIGINT.UNSIGNED,
+        type: dataTypes.BIGINT,
       },
       email: {
         allowNull: false,
@@ -21,31 +21,31 @@ export default {
         allowNull: false,
         type: dataTypes.STRING(100),
       },
-      group_id: {
-        allowNull: false,
-        type: dataTypes.BIGINT.UNSIGNED,
-      },
       started_date: {
         allowNull: false,
-        type: dataTypes.DATEONLY,
+        type: dataTypes.DATE(),
       },
       position_id: {
         allowNull: false,
-        type: dataTypes.TINYINT.UNSIGNED,
+        type: dataTypes.TINYINT,
       },
+
       created_date: {
         allowNull: false,
         type: dataTypes.DATE,
         defaultValue: literal('CURRENT_TIMESTAMP'),
       },
+
       updated_date: {
         allowNull: false,
         type: dataTypes.DATE,
         defaultValue: literal('CURRENT_TIMESTAMP'),
       },
+
       deleted_date: {
+        allowNull: true,
         type: dataTypes.DATE,
       },
     }),
-  down: (qi: QueryInterface) => qi.dropTable('user'),
+  down: (qi: QueryInterface) => qi.dropTable('customer'),
 };

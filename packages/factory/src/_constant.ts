@@ -228,3 +228,24 @@ export const paletteSymbols = {
     ],
   },
 };
+
+export const messageApiError = {
+  requiredError: (nameCategory: string) => `${nameCategory}は必須です。`,
+  lengthExceeded: (
+    nameCategory: string,
+    maxLength: number,
+    currentLength: number,
+  ) =>
+    `${nameCategory}は「${maxLength}」文字以下で入力してください。（現在${currentLength}文字）`,
+  emailErorr: () => 'メールアドレスを正しく入力してください。',
+  loginFailure: () => 'メールアドレスまたは会員IDが間違っています。',
+  datatypeError: (nameCategory: string) =>
+    `${nameCategory}は{1}で入力してください。`,
+  valueError: () => '有効なリスト値を入力してください。',
+  notExistError: (nameCategory: string) =>
+    `該当する${nameCategory}がありません。`,
+  duplicateValueError: () => 'すでにメールアドレスは登録されています。',
+  deleteError: () => 'ログインしているアカウントを削除できません。',
+  formatError: (nameCategory: string) =>
+    `${nameCategory}は日付を正しく入力してください。`,
+};

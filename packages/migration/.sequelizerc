@@ -3,5 +3,6 @@ const path = require('path');
 module.exports = {
   'config': path.resolve('dst', 'config.js'),
   'models-path': path.resolve('dst', 'models'),
+  'seeders-path': path.resolve('dst', 'migrations'),
   'migrations-path': path.resolve('dst', 'migrations')
 }
