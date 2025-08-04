@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: ./infra/api/Dockerfile.api
     container_name: api
+    environment:
+      - NODE_ENV=development
     ports:
       - "8081:8081"
     restart: always

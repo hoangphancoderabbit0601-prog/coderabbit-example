@@ -80,5 +80,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/intern-source
-            docker-compose down
+            git pull origin develop
+            docker-compose down api front
             docker-compose up --build -d
+            docker system prune -af
