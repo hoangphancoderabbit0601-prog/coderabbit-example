@@ -66,6 +66,7 @@ jobs:
   deploy:
     needs: [install, lint, build]
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
     
     steps:
       - name: Checkout code
