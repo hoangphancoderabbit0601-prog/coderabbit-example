@@ -19,7 +19,7 @@ export default (err: any, _req: Request, res: Response, next: NextFunction) => {
     if (!(err instanceof errors.Error)) {
       responseError = new errors.Error(
         getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR),
-        err.message,
+        'ERROR',
       );
     }
 
