@@ -21,9 +21,7 @@ export function validationMiddleware(schema: AnyObjectSchema) {
 
       return next();
     } catch (err: any) {
-      return res
-        .status(StatusCodes.UNPROCESSABLE_ENTITY)
-        .json({ errors: err.errors });
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors: err.errors });
     }
   };
 }
