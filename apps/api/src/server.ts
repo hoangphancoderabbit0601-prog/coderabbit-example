@@ -15,7 +15,7 @@ import createClient from './sequelize';
 async function main() {
   dayjs.extend(utc);
   dayjs.extend(timezone);
-  dayjs.tz.setDefault('Asia/Tokyo');
+  dayjs.tz.setDefault('Asia/Ho_Chi_Minh');
 
   const app = express();
   const sequelize = await createClient();
@@ -50,7 +50,7 @@ async function main() {
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ limit: '1mb', extended: true }));
 
-  app.use('/v1', router(sequelize));
+  app.use('/api/v1', router(sequelize));
 
   app.listen(PORT, () => console.log(`Run on http://localhost:${PORT}`));
 }

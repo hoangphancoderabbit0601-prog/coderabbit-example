@@ -11,7 +11,7 @@ export default class ForbiddenError extends BWError {
   constructor(message?: string) {
     let actualMessage = message;
     if (isNil(message) || isEmpty(message)) {
-      actualMessage = 'Forbidden.';
+      actualMessage = '権限がないURLです';
     }
 
     super(

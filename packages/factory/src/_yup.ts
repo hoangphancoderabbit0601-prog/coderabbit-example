@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 import { isEmpty, isNil } from 'lodash';
 import * as yup from 'yup';
 
-import { messages } from './_constant';
+import { messageApiError, messages } from './_constant';
 
-const ACCEPTED_DATE_FORMAT = ['YYYY-MM-DD'];
+const ACCEPTED_DATE_FORMAT = ['YYYY/MM/DD'];
 
 const ACCEPTED_DATETIME_FORMAT = [
   'YYYY-M-D H:m:s',
@@ -132,7 +132,7 @@ export const setupCustomValidator = () => {
 
       return (
         matched ||
-        createError({ path, message: messages.typeError('${label}', '日付') })
+        createError({ path, message: messageApiError.formatError('${label}') })
       );
     });
   });
