@@ -3,7 +3,7 @@ import { InferType, object, str } from './_yup';
 import { IUserMainAttr } from './user';
 
 export interface IUserInfo extends Omit<IUserMainAttr, 'password'> {
-  id: number;
+  id: bigint;
   name: string;
 }
 

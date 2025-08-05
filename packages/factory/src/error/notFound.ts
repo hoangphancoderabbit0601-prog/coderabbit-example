@@ -13,7 +13,7 @@ export default class NotFoundError extends BWError {
   constructor(entityName: string, message?: string) {
     let actualMessage = message;
     if (isNil(message) || isEmpty(message)) {
-      actualMessage = `Not Found: ${entityName}.`;
+      actualMessage = 'Not Found URL';
     }
 
     super(

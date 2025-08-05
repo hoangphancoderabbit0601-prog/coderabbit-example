@@ -11,7 +11,7 @@ export default class UnauthorizedError extends BWError {
   constructor(message?: string) {
     let actualMessage = message;
     if (isNil(message) || isEmpty(message)) {
-      actualMessage = 'Unauthorized.';
+      actualMessage = '認証エラー';
     }
 
     super(
