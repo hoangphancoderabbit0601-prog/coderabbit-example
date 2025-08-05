@@ -8,9 +8,18 @@ export interface IUserInfo extends Omit<IUserMainAttr, 'password'> {
 }
 
 export const loginSchema = object({
-  email: str().required(messageApiError.requiredError('email')).label('email'),
+  email: str()
+    .required(messageApiError.requiredError('email'))
+    .email(messageApiError.emailErorr())
+    .max(255, ({ value, label }) =>
+      messageApiError.lengthExceeded(label, 255, value.length),
+    )
+    .label('email'),
   password: str()
     .required(messageApiError.requiredError('password'))
+    .max(255, ({ value, label }) =>
+      messageApiError.lengthExceeded(label, 255, value.length),
+    )
     .label('password'),
 });
 
