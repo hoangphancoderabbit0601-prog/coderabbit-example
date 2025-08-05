@@ -11,7 +11,7 @@ export default (err: any, _req: Request, res: Response, next: NextFunction) => {
   }
 
   if (err instanceof ValidationError) {
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
+    res.status(StatusCodes.BAD_REQUEST).json({
       errors: map(err.errors, 'message'),
     });
   } else {
@@ -23,11 +23,11 @@ export default (err: any, _req: Request, res: Response, next: NextFunction) => {
       );
     }
 
-    const json: { info?: string; message?: string } = {};
+    const json: { info?: string; errors?: [string] } = {};
     if (err instanceof errors.Info) {
       json.info = responseError.message;
     } else {
-      json.message = responseError.message;
+      json.errors = [responseError.message];
     }
 
     res.status(responseError.httpStatus).json(json);
