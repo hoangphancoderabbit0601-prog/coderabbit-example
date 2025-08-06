@@ -9,18 +9,18 @@ export interface IUserInfo extends Omit<IUserMainAttr, 'password'> {
 
 export const loginSchema = object({
   email: str()
-    .required(messageApiError.requiredError('email'))
+    .required(messageApiError.requiredError('メールアドレス'))
     .email(messageApiError.emailErorr())
     .max(255, ({ value, label }) =>
       messageApiError.lengthExceeded(label, 255, value.length),
     )
-    .label('email'),
+    .label('メールアドレス'),
   password: str()
-    .required(messageApiError.requiredError('password'))
+    .required(messageApiError.requiredError('パスワード'))
     .max(255, ({ value, label }) =>
       messageApiError.lengthExceeded(label, 255, value.length),
     )
-    .label('password'),
+    .label('パスワード'),
 });
 
 export type ILoginParams = InferType<typeof loginSchema>;
