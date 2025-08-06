@@ -26,5 +26,11 @@ export default function (db: SQLize) {
     customerController.updateCustomer,
   );
 
+  customerRouter.delete(
+    '/:id([0-9]+)',
+    authorize([Position.Administrator]),
+    customerController.deleteCustomer,
+  );
+
   return customerRouter;
 }
