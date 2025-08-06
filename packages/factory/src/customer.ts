@@ -10,34 +10,34 @@ export enum Position {
 
 export const createCustomerSchema = object({
   name: str()
-    .required(messageApiError.requiredError('name'))
+    .required(messageApiError.requiredError('顧客名'))
     .max(100, ({ value, label }) =>
       messageApiError.lengthExceeded(label, 100, value.length),
     )
-    .label('name'),
+    .label('顧客名'),
   email: str()
-    .required(messageApiError.requiredError('email'))
+    .required(messageApiError.requiredError('メールアドレス'))
     .email(messageApiError.emailErorr())
     .max(255, ({ value, label }) =>
       messageApiError.lengthExceeded(label, 255, value.length),
     )
-    .label('email'),
+    .label('メールアドレス'),
   position_id: num()
-    .required(messageApiError.requiredError('position_id'))
+    .required(messageApiError.requiredError('役職'))
     .test('should position id valid', messageApiError.valueError(), (value) => {
       return includes(values(Position), value);
     })
-    .label('position_id'),
+    .label('役職'),
   started_date: str()
     .validDate()
-    .required(messageApiError.requiredError('started_date'))
-    .label('started_date'),
+    .required(messageApiError.requiredError('会員登録日'))
+    .label('会員登録日'),
   password: str()
-    .required(messageApiError.requiredError('password'))
+    .required(messageApiError.requiredError('パスワード'))
     .max(255, ({ value, label }) =>
       messageApiError.lengthExceeded(label, 255, value.length),
     )
-    .label('password'),
+    .label('パスワード'),
 });
 
 export type createCustomerType = InferType<typeof createCustomerSchema>;
