@@ -8,9 +8,7 @@ import BWError from './error';
  * NotFoundError
  */
 export default class NotFoundError extends BWError {
-  public readonly entityName: string;
-
-  constructor(entityName: string, message?: string) {
+  constructor(message?: string) {
     let actualMessage = message;
     if (isNil(message) || isEmpty(message)) {
       actualMessage = 'Not Found URL';
@@ -21,7 +19,5 @@ export default class NotFoundError extends BWError {
       actualMessage,
       StatusCodes.NOT_FOUND,
     );
-
-    this.entityName = entityName;
   }
 }

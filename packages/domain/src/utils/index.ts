@@ -1,11 +1,20 @@
-import { get, includes, isEmpty, keys, map, pickBy, set } from 'lodash';
+import {
+  get,
+  includes,
+  isEmpty,
+  keys,
+  map,
+  pick as pickLodash,
+  pickBy,
+  set,
+} from 'lodash';
 
 export const pick = <T extends object>(
   params: T,
   field: (keyof T)[],
   childArrayOption?: { [i: string]: string[] },
 ) => {
-  const result = <Required<T>>pick(params, field);
+  const result = <Required<T>>pickLodash(params, field);
 
   if (childArrayOption !== undefined) {
     for (const childField of keys(childArrayOption)) {
