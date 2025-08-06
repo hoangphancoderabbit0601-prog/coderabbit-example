@@ -1,6 +1,7 @@
 import { CustomerMapper } from '@domain/mapper/customer';
 import { CustomerRepository } from '@domain/repo';
 import { errors } from '@factory';
+import { messageApiError } from '@factory/_constant';
 import { Position } from '@factory/customer';
 import { NextFunction, Request, Response } from 'express';
 
@@ -14,6 +15,7 @@ class CustomerController extends BaseController {
     this.customerRepository = new CustomerRepository(this.db);
 
     this.createCustomer = this.nextWrapper(this.createCustomer);
+    this.deleteCustomer = this.nextWrapper(this.deleteCustomer);
     this.updateCustomer = this.nextWrapper(this.updateCustomer);
   }
 
@@ -50,6 +52,20 @@ class CustomerController extends BaseController {
     res.json({
       id: result.id.toString(),
     });
+  };
+
+  public deleteCustomer = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const updater = req.user;
+    const idParam = req.params.id;
+    if (updater.id.toString() === idParam) {
+      throw new errors.BadRequestError(messageApiError.deleteError());
+    }
+    await this.customerRepository.deleteCustomer(idParam);
+    this.noContent(res);
   };
 }
 

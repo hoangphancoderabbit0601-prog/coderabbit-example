@@ -18,7 +18,6 @@ export class AuthRepository extends BaseRepository {
     const user = await this.model.findOne({
       where: {
         email: params.email,
-        deletedDate: null,
       },
     });
     if (isNil(user)) {

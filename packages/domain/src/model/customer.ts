@@ -11,7 +11,7 @@ import {
 import { Common } from './_common';
 import { Order } from './order';
 
-@Table({ tableName: 'customer' })
+@Table({ tableName: 'customer', timestamps: true, paranoid: true })
 export class Customer extends Common {
   @PrimaryKey
   @AutoIncrement

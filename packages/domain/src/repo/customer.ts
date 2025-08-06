@@ -17,7 +17,6 @@ export class CustomerRepository extends BaseRepository {
     const foundUser = await this.model.findOne({
       where: {
         email: customerData.email,
-        deletedDate: null,
       },
     });
     if (foundUser)
@@ -43,7 +42,6 @@ export class CustomerRepository extends BaseRepository {
     const foundUser = await this.model.findOne({
       where: {
         id: customerId,
-        deletedDate: null,
       },
     });
     if (!foundUser) throw new errors.NotFound();
@@ -51,7 +49,6 @@ export class CustomerRepository extends BaseRepository {
       where: {
         email: customerData.email,
         id: { [Op.ne]: customerId },
-        deletedDate: null,
       },
     });
     if (!isNil(foundUserDuplicate))
@@ -68,5 +65,11 @@ export class CustomerRepository extends BaseRepository {
     }
     const user = await foundUser.update(customerModel);
     return user;
+  }
+
+  public async deleteCustomer(id: string) {
+    const foundUser = await this.model.findByPk(id);
+    if (!foundUser) throw new errors.NotFound();
+    await foundUser.destroy();
   }
 }

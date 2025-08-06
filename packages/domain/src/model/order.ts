@@ -15,6 +15,7 @@ import { Customer } from './customer';
 @Table({
   tableName: 'order',
   timestamps: true,
+  paranoid: true,
 })
 export class Order extends Common {
   @PrimaryKey
