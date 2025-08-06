@@ -1,3 +1,4 @@
+import { AuthMapper } from '@domain/mapper';
 import { AuthRepository } from '@domain/repo/auth';
 import { NextFunction, Request, Response } from 'express';
 
@@ -15,10 +16,8 @@ class AuthController extends BaseController {
   }
 
   public login = async (req: Request, res: Response, _next: NextFunction) => {
-    const user = await this.authRepo.login({
-      email: req.body.email,
-      password: req.body.password,
-    });
+    const data = AuthMapper.toLogin(req.body);
+    const user = await this.authRepo.login(data);
 
     res.json({
       ...user,

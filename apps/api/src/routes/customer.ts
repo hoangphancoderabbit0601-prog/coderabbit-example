@@ -1,4 +1,8 @@
-import { createCustomerSchema, Position } from '@factory/customer';
+import {
+  createCustomerSchema,
+  Position,
+  updateCustomerSchema,
+} from '@factory/customer';
 import { Router } from 'express';
 
 import CustomerController from '../controllers/customer';
@@ -14,6 +18,12 @@ export default function (db: SQLize) {
     authorize([Position.Administrator]),
     validationMiddleware(createCustomerSchema),
     customerController.createCustomer,
+  );
+
+  customerRouter.put(
+    '/:id([0-9]+)',
+    validationMiddleware(updateCustomerSchema),
+    customerController.updateCustomer,
   );
 
   return customerRouter;

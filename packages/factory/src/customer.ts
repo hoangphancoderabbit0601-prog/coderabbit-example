@@ -41,3 +41,16 @@ export const createCustomerSchema = object({
 });
 
 export type createCustomerType = InferType<typeof createCustomerSchema>;
+export const updateCustomerSchema = createCustomerSchema.concat(
+  object({
+    password: str()
+      .optional()
+      .transform((v) => (v === null ? '' : v))
+      .min(1, messageApiError.requiredError('パスワード'))
+      .max(255, ({ value, label }) =>
+        messageApiError.lengthExceeded(label, 255, value.length),
+      )
+      .label('パスワード'),
+  }),
+);
+export type updateCustomerType = InferType<typeof updateCustomerSchema>;
