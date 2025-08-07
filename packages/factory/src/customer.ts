@@ -1,7 +1,7 @@
 import { includes, values } from 'lodash';
 
 import { messageApiError } from './_constant';
-import { InferType, num, object, str } from './_yup';
+import { flags, InferType, num, number, object, str } from './_yup';
 export enum Position {
   Administrator = 0,
   Group = 1,
@@ -40,7 +40,7 @@ export const createCustomerSchema = object({
     .label('パスワード'),
 });
 
-export type createCustomerType = InferType<typeof createCustomerSchema>;
+export type CreateCustomerType = InferType<typeof createCustomerSchema>;
 export const updateCustomerSchema = createCustomerSchema.concat(
   object({
     password: str()
@@ -53,4 +53,30 @@ export const updateCustomerSchema = createCustomerSchema.concat(
       .label('パスワード'),
   }),
 );
-export type updateCustomerType = InferType<typeof updateCustomerSchema>;
+export type UpdateCustomerType = InferType<typeof updateCustomerSchema>;
+
+export const searchCustomerSchema = object({
+  name: str()
+    .optional()
+    .nullable()
+    .max(100, ({ value, label }) =>
+      messageApiError.lengthExceeded(label, 100, value.length),
+    )
+    .label('顧客名'),
+  position_id: flags().optional().label('役職'),
+  started_date_from: str().validDate().optional().label('会員登録日From'),
+  started_date_to: str().validDate().optional().label('会員登録日To'),
+  limit: number()
+    .typeError(messageApiError.datatypeError('取得件数', 'number'))
+    .optional()
+    .min(1, messageApiError.valueError())
+    .max(10, messageApiError.valueError())
+    .label('取得件数'),
+  offset: number()
+    .typeError(messageApiError.datatypeError('page数', 'number'))
+    .optional()
+    .min(0, messageApiError.valueError())
+    .label('page数'),
+});
+
+export type SearchCustomerType = InferType<typeof searchCustomerSchema>;

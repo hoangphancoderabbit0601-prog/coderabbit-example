@@ -239,8 +239,8 @@ export const messageApiError = {
     `${nameCategory}は「${maxLength}」文字以下で入力してください。（現在${currentLength}文字）`,
   emailErorr: () => 'メールアドレスを正しく入力してください。',
   loginFailure: () => 'メールアドレスまたは会員IDが間違っています。',
-  datatypeError: (nameCategory: string) =>
-    `${nameCategory}は{1}で入力してください。`,
+  datatypeError: (nameCategory: string, dataType: string) =>
+    `${nameCategory}は${dataType}で入力してください。`,
   valueError: () => '有効なリスト値を入力してください。',
   notExistError: (nameCategory: string) =>
     `該当する${nameCategory}がありません。`,
