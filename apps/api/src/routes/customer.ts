@@ -1,6 +1,7 @@
 import {
   createCustomerSchema,
   Position,
+  searchCustomerSchema,
   updateCustomerSchema,
 } from '@factory/customer';
 import { Router } from 'express';
@@ -30,6 +31,12 @@ export default function (db: SQLize) {
     '/:id([0-9]+)',
     authorize([Position.Administrator]),
     customerController.deleteCustomer,
+  );
+
+  customerRouter.get(
+    '/',
+    validationMiddleware(searchCustomerSchema),
+    customerController.getCustomer,
   );
 
   return customerRouter;

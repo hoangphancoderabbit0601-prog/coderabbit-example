@@ -17,6 +17,7 @@ class CustomerController extends BaseController {
     this.createCustomer = this.nextWrapper(this.createCustomer);
     this.deleteCustomer = this.nextWrapper(this.deleteCustomer);
     this.updateCustomer = this.nextWrapper(this.updateCustomer);
+    this.getCustomer = this.nextWrapper(this.getCustomer);
   }
 
   public createCustomer = async (
@@ -66,6 +67,19 @@ class CustomerController extends BaseController {
     }
     await this.customerRepository.deleteCustomer(idParam);
     this.noContent(res);
+  };
+
+  public getCustomer = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const dto = CustomerMapper.toCustomerSearch(req.query);
+    const data = await this.customerRepository.getCustomer(dto);
+    res.json({
+      total_count: data.count,
+      customer: data.rows,
+    });
   };
 }
 
