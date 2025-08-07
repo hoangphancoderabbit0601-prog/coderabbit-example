@@ -81,6 +81,17 @@ class CustomerController extends BaseController {
       customer: data.rows,
     });
   };
+
+  public getById = async (req: Request, res: Response, _next: NextFunction) => {
+    const loginUser = req.user;
+    const idParam = req.params.id;
+    if (loginUser.positionId !== 0 && idParam !== loginUser.id.toString())
+      throw new errors.Forbidden();
+    const data = await this.customerRepository.getCustomerById(
+      BigInt(req.params.id),
+    );
+    res.json({ customer: data });
+  };
 }
 
 export default CustomerController;
