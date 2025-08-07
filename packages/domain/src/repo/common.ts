@@ -2,7 +2,7 @@ import { Position } from '@factory/customer';
 import dayjs from 'dayjs';
 import { map } from 'lodash';
 
-import { Customer } from '../model';
+import { Customer, Order } from '../model';
 
 export class CommonRepository {
   public static findCustomerResponse = (customer: Customer) => {
@@ -39,5 +39,23 @@ export class CommonRepository {
       this.findCustomerResponse(customer);
     });
     return customers;
+  };
+
+  public static findListOrderResponse = (orders: Order[]) => {
+    map(orders, (order) => {
+      order.dataValues.id = order.dataValues.id.toString();
+      order.dataValues.created_date = dayjs(
+        order.dataValues.created_date,
+      ).format('YYYY/MM/DD');
+      order.dataValues.updated_date = dayjs(
+        order.dataValues.updated_date,
+      ).format('YYYY/MM/DD');
+      order.dataValues.deleted_date = order.dataValues.deleted_date
+        ? dayjs(order.dataValues.deleted_date).format('YYYY/MM/DD')
+        : '';
+      order.dataValues.customer.dataValues.id =
+        order.dataValues.customer.dataValues.id.toString();
+    });
+    return orders;
   };
 }
