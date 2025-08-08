@@ -1,5 +1,11 @@
 <template>
   <div class="login-card">
+    <img
+      class="m-auto"
+      src="../../assets/FreshCart_Logo.png"
+      width="150"
+      alt="Logo"
+    />
     <Form
       :initial-values="initialValues"
       :resolver="resolver"
@@ -10,42 +16,53 @@
         v-slot="$field"
         as="section"
         name="email"
-        class="form-group"
+        class="form-group flex"
         aria-label="Email"
       >
-        <InputText type="text" placeholder="Email" v-bind="$field" />
-        <Message
-          v-if="$field?.invalid"
-          severity="error"
-          size="small"
-          variant="simple"
-        >
-          {{ $field.error?.message }}
-        </Message>
+        <span class="">メールアドレス</span>
+        <div class="!flex !flex-col">
+          <InputText type="text" v-bind="$field" />
+
+          <div class="min-h-[1.5rem] mt-1">
+            <Message
+              v-if="$field?.invalid"
+              severity="error"
+              size="small"
+              variant="simple"
+            >
+              {{ $field.error?.message }}
+            </Message>
+          </div>
+        </div>
       </FormField>
 
       <FormField v-slot="$field" asChild name="password">
-        <section class="form-group">
-          <Password
-            type="text"
-            placeholder="Password"
-            :feedback="false"
-            toggleMask
-            fluid
-            v-bind="$field"
-          />
-          <Message
-            v-if="$field?.invalid"
-            severity="error"
-            size="small"
-            variant="simple"
-          >
-            {{ $field.error?.message }}
-          </Message>
+        <section class="form-group !flex">
+          <span class="">パスワード</span>
+          <div class="!flex !flex-col">
+            <Password
+              type="text"
+              :feedback="false"
+              toggleMask
+              fluid
+              v-bind="$field"
+            />
+
+            <div class="min-h-[2rem] mt-1">
+              <Message
+                v-if="$field?.invalid"
+                severity="error"
+                size="small"
+                variant="simple"
+              >
+                {{ $field.error?.message }}
+              </Message>
+            </div>
+          </div>
         </section>
       </FormField>
 
-      <Button type="submit" severity="secondary" label="Submit" />
+      <Button type="submit" severity="secondary" label="ログイン" />
     </Form>
   </div>
 </template>
@@ -61,8 +78,8 @@ import { useAppStorage } from '@/composables';
 import { useMutation } from '@/composables/client';
 import { useErrorHandler } from '@/composables/errorHandler';
 import { useLoading } from '@/composables/loading';
+import { SCREEN_NAMES } from '@/constants';
 import { authService } from '@/services';
-
 const initialValues = ref({
   email: '',
   password: '',
@@ -86,13 +103,13 @@ const onFormSubmit = async (formData: any) => {
     const result = await mutate(values);
 
     if (isNil(error.value)) {
-      accessToken.value = result?.token;
+      accessToken.value = result?.token.accessToken;
       const { redirectUrl } = route.query;
 
       router.push(
         typeof redirectUrl === 'string'
           ? { path: decodeURIComponent(redirectUrl) }
-          : { name: 'user-search' },
+          : { name: SCREEN_NAMES.CUSTOMER_LIST },
       );
     }
   }

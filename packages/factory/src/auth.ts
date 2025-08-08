@@ -4,7 +4,6 @@ import { IUserMainAttr } from './user';
 
 export interface IUserInfo extends Omit<IUserMainAttr, 'password'> {
   id: bigint;
-  name: string;
 }
 
 export const loginSchema = object({
@@ -24,3 +23,16 @@ export const loginSchema = object({
 });
 
 export type ILoginParams = InferType<typeof loginSchema>;
+
+export interface ILoginResponse {
+  id: string;
+  email: string;
+  name: string;
+  started_date: string;
+  position_id: string;
+  created_date: string;
+  updated_date: string;
+  token: {
+    accessToken: string;
+  };
+}

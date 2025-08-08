@@ -16,7 +16,7 @@ const commonOption = {
   },
   customClass: {
     container:
-      'position-fixed text-center bg-gray-600 bg-opacity-60 top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center p-0',
+      'position-fixed text-center bg-gray-600 bg-opacity-60 top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center p-0 w-full',
     popup:
       'text-center mb-4 text-gray-800 d-flex flex-column rounded-lg bg-white shadow-lg w-96 p-4 mb-10 focus-outline-none',
     title: 'mb-4 d-flex justify-content-center align-items-center',
@@ -24,9 +24,9 @@ const commonOption = {
     actions: 'd-flex w-100 justify-content-evenly space-x-2',
     htmlContainer: 'm-0 mb-4 text-base',
     confirmButton:
-      'btn rounded-lg px-4 py-1.5 text-white transition-opacity bg-primary',
+      'btn rounded-lg px-4 py-1.5 transition-opacity bg-primary cursor-pointer',
     cancelButton:
-      'btn rounded-lg px-4 py-1.5 text-white transition-opacity bg-warning',
+      'btn rounded-lg px-4 py-1.5 transition-opacity bg-warning cursor-pointer',
     input: 'mb-4',
     validationMessage:
       'd-flex justify-content-center align-items-center mt-4 p-2.5 overflow-hidden bg-gray-200 text-gray-500 text-sm',

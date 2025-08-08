@@ -249,3 +249,71 @@ export const messageApiError = {
   formatError: (nameCategory: string) =>
     `${nameCategory}は日付を正しく入力してください。`,
 };
+
+export const messageFrontError = {
+  ECL001: (categoryName: string) => `${categoryName}は必須です。`,
+  ECL002: (categoryName: string, maxLength: number, current: number) =>
+    `${categoryName}は「${maxLength}」文字以下で入力してください。（現在${current}文字）`,
+  ECL003: (categoryName: string, minLength: number, current: number) =>
+    `${categoryName}は「${minLength}」文字以上で入力してください。（現在${current}文字）`,
+  ECL004: (categoryName: string) =>
+    `${categoryName}は半角英数で入力してください。`,
+  ECL005: () => 'メールアドレスを正しく入力してください。',
+  ECL006: (categoryName: string) => `${categoryName}は全角で入力してください。`,
+  ECL007: (categoryName: string) =>
+    `${categoryName}は全角カナで入力してください。`,
+  ECL008: (categoryName: string) =>
+    `${categoryName}は日付を正しく入力してください。`,
+  ECL009: (categoryName: string) =>
+    `${categoryName}は郵便番号を正しく入力してください。`,
+  ECL010: (categoryName: string) =>
+    `${categoryName}は数字を正しく入力してください。`,
+  ECL011: (categoryName: string) =>
+    `${categoryName}は電話番号を正しく入力してください。`,
+  ICL012: () => '検索結果は0件です。',
+  ICL013: (field: string) => `${field}します。よろしいですか？`,
+  ECL014: () => `再度、新規アカウント作成を行ってください。`,
+  ECL015: () => '再度、パスワード再設定を行ってください。',
+  ECL016: () => 'メールアドレスまたは会員IDが間違っています。',
+  ECL017: () =>
+    '入力した情報のいずれかの情報が間違っています。\n確認してから再度試してください。',
+  ECL018: () => '確認用のメールアドレスが間違っています。',
+  ECL019: () => 'すでにメールアドレスは登録されています。',
+  ECL020: () => '入力した文字が間違っています。',
+  ECL021: () => 'パスワードは半角英数字記号で8～20文字で入力してください。',
+  ECL022: () => 'パスワードには会員IDと同じ値は使用できません。',
+  ECL023: () =>
+    'パスワードには半角数字のみ、または半角英字のみの値は使用できません。',
+  ECL024: () => '現在のパスワードは正しくありません。',
+  ECL025: () => 'すでに会員IDは登録されています。',
+  ECL026: () => 'すでに会員登録されています。',
+  ECL027: () => '確認用のパスワードが間違っています。',
+  ECL028: (categoryName: string, require: number, current: number) =>
+    `${categoryName}は「${require}」文字で入力してください。（現在${current}文字）`,
+  ECL029: (categoryName: string) =>
+    `${categoryName}は最低1文字数字以外の文字を含む必要があります。`,
+  ECL030: (
+    formatFile: string, // Ex: CSVファイル
+  ) => `ファイル形式が誤っています。${formatFile}を選択してください。`,
+  ECL031: (size: string) => `ファイルのサイズ制限${size}を超えています。`,
+  ECL032: () => 'ファイルの生成に失敗しました。',
+  ECL033: (data: string) => `${data}が取得できませんでした。`,
+  ICL034: (quantity: string) => `CSV出力件数は${quantity}件です。`,
+  ECL035: (category: string, byteNumber: number, current: number) =>
+    `${category}は「${byteNumber}」バイト以下で入力してください。（現在${current}バイト）`,
+  ICL036: (category: string) => `${category}は半角数字で入力してください。`,
+  ICL037: (category: string) => `${category}は半角英字で入力してください。`,
+  ECL038: () => 'アップロードするファイル中身が正しくありません。',
+  ECL039: () => 'アクセス権限がありません。',
+  ECL040: () => 'ログインしているアカウントを削除できません。',
+  ECL041: () => '指定された期間は正しくありません。',
+  ICL042: () => 'インポートできました。',
+  ECL043: () => '登録・更新・削除処理に失敗しました。',
+  ECL044: (categoryName: string) => `${categoryName}が存在しておりません。`,
+  ECL045: () => 'CSV取込に失敗しました。',
+  ICL046: () => '登録・更新・削除処理に成功しました。',
+  ECL047: () => 'CSV出力に失敗しました。',
+  ECL048: () => 'システムエラーになります。',
+  ICL049: () => '登録された顧客が0件です。',
+  ICL050: () => '現在注文がありません。',
+};
