@@ -21,9 +21,6 @@ export class OrderController extends BaseController {
   ) => {
     const dataSearch = OrderMapper.toOrderSearch(req.query);
     const result = await this.orderRepository.getOrders(dataSearch);
-    this.created(res, {
-      total_count: result.count,
-      order: result.rows,
-    });
+    res.json({ total_count: result.count, order: result.rows });
   };
 }

@@ -31,6 +31,7 @@ export class OrderRepository extends BaseRepository {
         'deleted_date',
       ],
       offset: limit && offset ? (offset - 1) * limit : undefined,
+      paranoid: false,
     });
     return {
       rows: CommonRepository.findListOrderResponse(rows),
