@@ -75,7 +75,7 @@ export const searchCustomerSchema = object({
   offset: number()
     .typeError(messageApiError.datatypeError('page数', 'number'))
     .optional()
-    .min(0, messageApiError.valueError())
+    .min(1, messageApiError.valueError())
     .label('page数'),
 });
 

@@ -124,7 +124,7 @@ export class CustomerRepository extends BaseRepository {
       ],
       attributes: ['id', 'email', 'name', 'started_date', 'position_id'],
       limit: limit ? Number(limit) : undefined,
-      offset: limit && offset ? offset * limit : undefined,
+      offset: limit && offset ? (offset - 1) * limit : undefined,
     });
 
     return { rows: CommonRepository.findListCustomerResponse(rows), count };
