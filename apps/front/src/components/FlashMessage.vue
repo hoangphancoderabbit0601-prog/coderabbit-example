@@ -9,7 +9,7 @@
   >
     <div
       v-if="visible"
-      class="flash-message fixed top-4 left-1/2 transform -translate-x-1/2 z-50 max-w-lg w-[90%] rounded-md px-6 py-4 text-white shadow-lg border-2 border-solid transition-all"
+      class="flash-message fixed top-4 transform z-50 max-w-lg w-[90%] rounded-md px-6 py-4 text-white shadow-lg border-2 border-solid transition-all"
       :class="flashClass"
     >
       <Button

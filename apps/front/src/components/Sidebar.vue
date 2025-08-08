@@ -1,15 +1,57 @@
 <template>
   <div id="sidebar" class="sidebar">
     <ul id="sidebar-nav" class="sidebar-nav">
-      <li class="nav-item">
-        <router-link class="nav-link" :to="{ name: 'top' }">
-          <i class="pi pi-align-justify"></i>
-          <span class="p-drawer-header">Top</span>
+      <li
+        class="nav-item"
+        :class="['nav-item', { active: side === ROUTE_MENUS.CUSTOMER }]"
+      >
+        <router-link
+          class="nav-link"
+          :to="{ name: SCREEN_NAMES.CUSTOMER_LIST }"
+        >
+          <i class="pi pi-user"></i>
+          <span class="p-drawer-header">顧客一覧</span>
+        </router-link>
+      </li>
+
+      <li
+        :class="[
+          'nav-item',
+          { active: side === ROUTE_MENUS.ORDER },
+          isHidden([Position.Administrator]) ? 'hidden' : '',
+        ]"
+      >
+        <router-link class="nav-link" :to="{ name: SCREEN_NAMES.ORDER_LIST }">
+          <i class="pi pi-box"></i>
+          <span class="p-drawer-header" style="">注文一覧</span>
         </router-link>
       </li>
     </ul>
   </div>
 </template>
+
+<script setup>
+import { Position } from '@factory/customer';
+import { find, includes, map } from 'lodash';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+import { useAppStorage } from '@/composables';
+import { ROUTE_MENUS, SCREEN_NAMES } from '@/constants';
+
+const { userInfo } = useAppStorage();
+const route = useRoute();
+const isHidden = (permission) => {
+  return !includes(permission, userInfo?.value?.positionId);
+};
+
+const side = computed(() => {
+  const routePathList = map(route.matched, (item) => item.path);
+  return find(ROUTE_MENUS, (value) => {
+    return includes(routePathList, '/' + value);
+  });
+});
+</script>
 
 <style lang="scss">
 .sidebar {
@@ -18,7 +60,7 @@
   left: 0;
   bottom: 0;
   width: 240px;
-  z-index: 996;
+  z-index: 10;
   transition: all 0.3s;
   padding: 20px;
   overflow-y: auto;
@@ -86,6 +128,11 @@
   padding: 0;
   margin: 5px 0px;
   list-style: none;
+
+  .nav-item.active {
+    background-color: crimson;
+    color: white;
+  }
 
   .nav-item {
     margin-bottom: 5px;
@@ -186,5 +233,9 @@
       }
     }
   }
+}
+
+hidden {
+  display: none;
 }
 </style>
