@@ -6,7 +6,7 @@ import { Service } from './_base';
 export class AuthService extends Service {
   public async login(params: ILoginParams) {
     return this.fetch<ILoginResponse>({
-      url: '/login',
+      url: '/v1/login',
       method: 'POST',
       data: params,
       expectedStatusCode: StatusCodes.OK,
