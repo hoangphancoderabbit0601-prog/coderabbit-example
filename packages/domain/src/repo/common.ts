@@ -55,6 +55,8 @@ export class CommonRepository {
         : '';
       order.dataValues.customer.dataValues.id =
         order.dataValues.customer.dataValues.id.toString();
+      order.dataValues.item_quantity =
+        order.dataValues.item_quantity.toString();
     });
     return orders;
   };
