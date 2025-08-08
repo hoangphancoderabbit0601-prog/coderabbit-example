@@ -18,6 +18,7 @@ class CustomerController extends BaseController {
     this.deleteCustomer = this.nextWrapper(this.deleteCustomer);
     this.updateCustomer = this.nextWrapper(this.updateCustomer);
     this.getCustomer = this.nextWrapper(this.getCustomer);
+    this.getById = this.nextWrapper(this.getById);
   }
 
   public createCustomer = async (
