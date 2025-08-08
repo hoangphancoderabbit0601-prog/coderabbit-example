@@ -2,6 +2,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 import { useAppStorage } from '@/composables/storage';
 
+import { SCREEN_NAMES } from './constants';
+
 const routes: RouteRecordRaw[] = [];
 
 const InstalledAppRoutes: any = import.meta.glob('./routes/*.ts', {
@@ -41,11 +43,11 @@ router.beforeEach((to, _from) => {
 
   if (auth && (!loggedIn.value || hasExpired())) {
     const redirectUrl = to.query.redirect || encodeURIComponent(to.fullPath);
-    return { name: 'login', query: { redirectUrl } };
+    return { name: SCREEN_NAMES.GENERAL, query: { redirectUrl } };
   }
 
   if (auth && !havePermission(to.meta?.permission as number[])) {
-    return { name: 'forbidden' };
+    return { name: SCREEN_NAMES.GENERAL };
   }
 
   return true;

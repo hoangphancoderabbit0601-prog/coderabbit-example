@@ -10,6 +10,7 @@ export const SCREEN_NAMES = {
   NOT_FOUND: 'not-found',
   INTERNAL_SERVER_ERROR: 'internal-server-error',
 
+  GENERAL: 'general',
   ORDER_LIST: 'order_list',
   CUSTOMER_LIST: 'customer_list',
   CUSTOMER_ADD_EDIT_DELETE: 'customer_add_edit_delete',
