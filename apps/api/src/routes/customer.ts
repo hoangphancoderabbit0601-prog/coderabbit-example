@@ -33,6 +33,8 @@ export default function (db: SQLize) {
     customerController.deleteCustomer,
   );
 
+  customerRouter.get('/:id([0-9]+)', customerController.getById);
+
   customerRouter.get(
     '/',
     validationMiddleware(searchCustomerSchema),

@@ -129,4 +129,12 @@ export class CustomerRepository extends BaseRepository {
 
     return { rows: CommonRepository.findListCustomerResponse(rows), count };
   }
+
+  public async getCustomerById(id: bigint) {
+    const foundCustomer = await this.model.findByPk(id, {
+      attributes: ['id', 'email', 'name', 'started_date', 'position_id'],
+    });
+    if (!foundCustomer) throw new errors.NotFound();
+    return CommonRepository.findCustomerResponse(foundCustomer);
+  }
 }
