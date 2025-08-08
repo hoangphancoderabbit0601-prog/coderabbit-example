@@ -10,6 +10,8 @@
       :initial-values="initialValues"
       :resolver="resolver"
       @submit="onFormSubmit"
+      :validate-on-blur="true"
+      :validate-on-value-update="false"
       class="form"
     >
       <FormField
@@ -19,7 +21,10 @@
         class="form-group flex"
         aria-label="Email"
       >
-        <span class="">メールアドレス</span>
+        <span class=""
+          >メールアドレス
+          <span class="text-red-500 font-bold">*</span>
+        </span>
         <div class="!flex !flex-col">
           <InputText type="text" v-bind="$field" />
 
@@ -38,7 +43,9 @@
 
       <FormField v-slot="$field" asChild name="password">
         <section class="form-group !flex">
-          <span class="">パスワード</span>
+          <span class=""
+            >パスワード <span class="text-red-500 font-bold">*</span></span
+          >
           <div class="!flex !flex-col">
             <Password
               type="text"
