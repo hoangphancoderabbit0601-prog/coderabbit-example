@@ -5,7 +5,10 @@ import { map } from 'lodash';
 import { Customer, Order } from '../model';
 
 export class CommonRepository {
-  public static findCustomerResponse = (customer: Customer) => {
+  public static findCustomerResponse = (
+    customer: Customer,
+    isFindAll: boolean = true,
+  ) => {
     let positionLabel = 'Unknow label';
     switch (customer.dataValues.position_id) {
       case Position.Administrator:
@@ -31,6 +34,14 @@ export class CommonRepository {
     customer.dataValues.started_date = dayjs(
       customer.dataValues.started_date,
     ).format('YYYY/MM/DD');
+    if (isFindAll) {
+      customer.dataValues.created_date = dayjs(
+        customer.dataValues.created_date,
+      ).format('YYYY/MM/DD');
+      customer.dataValues.updated_date = dayjs(
+        customer.dataValues.updated_date,
+      ).format('YYYY/MM/DD');
+    }
     return customer;
   };
 
