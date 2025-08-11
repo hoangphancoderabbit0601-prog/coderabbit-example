@@ -1,96 +1,72 @@
 <template>
-  <Button
-    type="button"
-    label="Export CSV"
-    icon="pi pi-file-export"
-    iconPos="left"
-    @click="handleClick"
-  />
+  <Button type="button" label="CSV出力" @click="handleClick" />
 </template>
 
 <script lang="ts" setup>
-import { Position } from '@factory/user';
-import dayjs from 'dayjs';
+import { SearchCustomerResponseType } from '@factory/customer';
+import { join } from 'lodash';
 import Button from 'primevue/button';
 import { ref } from 'vue';
 
-import { useErrorHandler, useQuery } from '@/composables';
-import { userService } from '@/services';
-import { stringFlag } from '@/utils/html';
-
 const props = defineProps<{
   animate?: boolean;
-  action?: string;
-  data: {
-    name: string;
-    dateFrom?: string;
-    dateTo?: string;
-  };
-  clickHandler?: () => Promise<void> | void;
+  filename?: string;
+  getData?: () => Promise<SearchCustomerResponseType[]>;
 }>();
 
 const animating = ref(false);
 
-const { result, error, refetch } = useQuery(userService.search, {
-  name: props.data.name,
-  dateFrom: props.data.dateFrom || '',
-  dateTo: props.data.dateTo || '',
-  offset: undefined,
-  limit: undefined,
-});
-
-useErrorHandler(error);
-
 const handleClick = async () => {
-  if (props.clickHandler) {
-    await props.clickHandler();
-  }
-
   if (animating.value) return;
   animating.value = true;
   setTimeout(() => (animating.value = false), 850);
 
-  await refetch({
-    name: props.data.name,
-    dateFrom: props.data.dateFrom || '',
-    dateTo: props.data.dateTo || '',
-    offset: undefined,
-    limit: undefined,
-  });
-
-  if (result?.data) {
-    const csvContent = generateCSV(result.data);
-    downloadCSV(csvContent, 'data.csv');
-  } else {
-    console.error('No data available to export');
+  if (props.getData) {
+    const data = await props.getData();
+    if (data && data.length > 0) {
+      const csvContent = generateCSV(data);
+      downloadCSV(csvContent, props.filename || 'customers.csv');
+    }
   }
 };
 
-const generateCSV = (data: any[]) => {
+const generateCSV = (data: SearchCustomerResponseType[]) => {
   const headers = [
-    'ID',
-    'User Name',
-    'Email',
-    'Group ID',
-    'Group Name',
-    'Started Date',
-    'Position',
-    'Created Date',
-    'Updated Date',
+    '"ID"',
+    '"Customer Name"',
+    '"Email"',
+    '"Order ID"',
+    '"Item Name"',
+    '"Started Date"',
+    '"Position"',
+    '"Created Date"',
+    '"Updated Date"',
   ];
 
-  const csvRows = data.map((item) => {
-    return [
-      item.id,
-      item.name,
-      item.email,
-      item.groupId,
-      item.group ? item.group.name : '',
-      item.startedDate,
-      stringFlag(Position, item.positionId),
-      dayjs.tz(item.createdDate).format('YYYY-MM-DD'),
-      dayjs.tz(item.updatedDate).format('YYYY-MM-DD'),
-    ].join(',');
+  const csvRows: string[] = [];
+
+  data.forEach((customer) => {
+    const orderIdList = join(
+      customer.orders.map((order) => order.id),
+      ',',
+    );
+    const itemNameList = join(
+      customer.orders.map((order) => order.item_name),
+      ',',
+    );
+    const row = [
+      `"${customer.id || ''}"`,
+      `"${customer.name || ''}"`,
+      `"${customer.email || ''}"`,
+      `"${orderIdList}"`,
+      `"${itemNameList}"`,
+      `"${customer.started_date || ''}"`,
+      `"${customer.position_id || ''}"`,
+      `"${customer.created_date || ''}"`,
+      `"${customer.updated_date || ''}"`,
+    ];
+
+    csvRows.push(row.join(','));
   });
 
   return [headers.join(','), ...csvRows].join('\n');

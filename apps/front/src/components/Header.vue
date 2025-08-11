@@ -4,47 +4,34 @@
       <router-link :to="{ name: 'top' }">Briswell</router-link>
     </div>
 
-    <div class="flex items-center">
-      <Avatar
-        image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-        class="mr-2 cursor-pointer"
-        shape="circle"
-        @click="toggle"
-      />
-      <Menu ref="menu" :model="items" :popup="true" />
+    <div class="flex items-center h-full">
+      <div style="align-items: center" class="flex h-full">
+        <h1 class="mx-2 font-bold">{{ userInfo?.name ?? '' }}</h1>
+      </div>
+      <div>
+        <h1
+          @click="clickLogout"
+          class="mx-2 font-bold text-blue-500 cursor-pointer"
+        >
+          Logout
+        </h1>
+      </div>
     </div>
   </header>
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useAppStorage } from '@/composables';
 
 const router = useRouter();
-const { logout } = useAppStorage();
+const { logout, userInfo } = useAppStorage();
 
-const menu = ref();
-const toggle = (event) => {
-  menu.value.toggle(event);
+const clickLogout = () => {
+  logout();
+  router.push({ name: 'login' });
 };
-
-const items = ref([
-  {
-    label: 'Profile',
-    items: [
-      {
-        label: 'Logout',
-        icon: 'pi pi-sign-out',
-        command: () => {
-          logout();
-          router.push({ name: 'login' });
-        },
-      },
-    ],
-  },
-]);
 </script>
 
 <style lang="scss" scoped>
@@ -53,7 +40,7 @@ const items = ref([
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 1;
   height: 60px;
   display: flex;
   align-items: center;

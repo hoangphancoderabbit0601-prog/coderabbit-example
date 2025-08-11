@@ -254,7 +254,9 @@ export const useFormWithSchema = <T extends GenericObject>(
   const fields = defineFields || Object.keys(schema.fields);
   const models = {} as any;
   for (const field of fields) {
-    const [model] = defineField(field as any);
+    const [model] = defineField(field as any, {
+      validateOnModelUpdate: false,
+    });
     models[field] = model;
   }
 

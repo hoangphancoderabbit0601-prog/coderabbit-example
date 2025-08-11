@@ -9,7 +9,6 @@
           class="nav-link"
           :to="{ name: SCREEN_NAMES.CUSTOMER_LIST }"
         >
-          <i class="pi pi-user"></i>
           <span class="p-drawer-header">顧客一覧</span>
         </router-link>
       </li>
@@ -22,7 +21,6 @@
         ]"
       >
         <router-link class="nav-link" :to="{ name: SCREEN_NAMES.ORDER_LIST }">
-          <i class="pi pi-box"></i>
           <span class="p-drawer-header" style="">注文一覧</span>
         </router-link>
       </li>
