@@ -135,6 +135,6 @@ export class CustomerRepository extends BaseRepository {
       attributes: ['id', 'email', 'name', 'started_date', 'position_id'],
     });
     if (!foundCustomer) throw new errors.NotFound();
-    return CommonRepository.findCustomerResponse(foundCustomer);
+    return CommonRepository.findCustomerResponse(foundCustomer, false);
   }
 }
