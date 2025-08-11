@@ -48,7 +48,7 @@ export const searchDateFromTo = (date: {
     whereDate = {
       ...whereDate,
       [Op.gte]: dateFrom.isValid()
-        ? `${dayjs(date.from).format('YYYY-MM-DD')}`
+        ? `${dayjs(date.from).format('YYYY-MM-DD')} 00:00:00`
         : null,
     };
   }
@@ -57,7 +57,7 @@ export const searchDateFromTo = (date: {
     whereDate = {
       ...whereDate,
       [Op.lte]: dateTo.isValid()
-        ? `${dayjs(date.to).format('YYYY-MM-DD')}`
+        ? `${dayjs(date.to).format('YYYY-MM-DD')} 23:59:59`
         : null,
     };
   }
