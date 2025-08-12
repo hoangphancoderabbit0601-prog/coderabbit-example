@@ -5,7 +5,7 @@ import {
   SearchCustomerType,
 } from '@factory/customer';
 import { map, max } from 'lodash';
-import { onBeforeMount, ref, toRaw } from 'vue';
+import { ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 
 import ExportButton from '@/components/ExportButton.vue';
@@ -13,7 +13,7 @@ import SearchUser from '@/components/SearchUser.vue';
 import {
   useErrorHandler,
   useFlashMessageStorage,
-  useQuery,
+  useLazyQuery,
 } from '@/composables';
 import { useLoading } from '@/composables/loading';
 import { useAppStorage } from '@/composables/storage';
@@ -34,7 +34,7 @@ const searchInput = ref<SearchCustomerType>({
   limit: PAGINATION_LIMIT,
   offset: 1,
 } as SearchCustomerType);
-const { result, error, refetch, isLoading } = useQuery(
+const { result, error, refetch, isLoading } = useLazyQuery(
   customerService.searchCustomer,
 );
 
@@ -42,11 +42,6 @@ const { showFlashMessage } = useFlashMessageStorage();
 
 useErrorHandler(error);
 useLoading(isLoading);
-// Fetch data on mount
-onBeforeMount(async () => {
-  isReset.value = true;
-  refreshData();
-});
 
 const columns = ref([
   { field: 'name', header: '顧客名' },
@@ -112,7 +107,7 @@ const onClickCreate = () => {
       @refresh-data="refreshData"
     />
   </div>
-  <div>
+  <div v-if="listCustomer.length">
     <h1 class="text-xl font-bold mb-4">検索結果</h1>
     <div class="bg-primary-bg w-5/6 h-full rounded-lg">
       <DataTable
@@ -184,17 +179,16 @@ const onClickCreate = () => {
         class="custom-paginator"
       >
       </Paginator>
-
-      <!-- Action Buttons -->
-      <div v-if="userInfo?.positionId === 0" class="flex gap-4 mt-4 p-4">
-        <Button label="作成" @click="onClickCreate" class="p-button-primary" />
-        <ExportButton
-          v-if="listCustomer.length"
-          :getData="getData"
-          filename="customers.csv"
-        />
-      </div>
     </div>
+  </div>
+  <!-- Action Buttons -->
+  <div v-if="userInfo?.positionId === 0" class="flex gap-4 mt-4 p-4">
+    <Button label="作成" @click="onClickCreate" class="p-button-primary" />
+    <ExportButton
+      v-if="listCustomer.length"
+      :getData="getData"
+      filename="customers.csv"
+    />
   </div>
 </template>
 

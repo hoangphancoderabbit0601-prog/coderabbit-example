@@ -19,8 +19,7 @@ for (const App in InstalledAppRoutes) {
   }
   routes.push({
     path: '/:pathMatch(.*)*',
-    meta: { title: '404 Not Found' },
-    redirect: { name: 'not-found' },
+    redirect: { name: SCREEN_NAMES.GENERAL },
   });
 }
 

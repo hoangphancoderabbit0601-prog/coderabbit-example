@@ -6,7 +6,7 @@ const commonOption = {
   allowOutsideClick: false,
   allowEnterKey: false,
   allowEscapeKey: false,
-  cancelButtonText: 'キャンセル',
+  cancelButtonText: 'Cancel',
   buttonsStyling: false,
   showClass: {
     popup: 'animate__fadeIn',
