@@ -179,7 +179,6 @@ const onClickCreate = () => {
         class="custom-paginator"
       >
       </Paginator>
-
     </div>
   </div>
   <!-- Action Buttons -->
