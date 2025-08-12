@@ -15,7 +15,7 @@ export default <RouteRecordRaw[]>[
         path: 'list',
         name: SCREEN_NAMES.CUSTOMER_LIST,
         meta: {
-          title: 'CustomerList',
+          title: 'Customer List',
           permission: [Position.Administrator, Position.Group, Position.User],
         },
         component: () => import('@/pages/customer/customerList.vue'),
