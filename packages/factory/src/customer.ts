@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { includes, values } from 'lodash';
 
 import { messageApiError, messageFrontError } from './_constant';
-import { flags, InferType, num, number, object, str } from './_yup';
+import { boolean, flags, InferType, num, number, object, str } from './_yup';
 export enum Position {
   Administrator = 0,
   Group = 1,
@@ -115,3 +115,73 @@ export type SearchCustomerResponseFormatType = {
   customer: SearchCustomerResponseType[];
   total_count: number;
 };
+
+export const upsertCustomerFrontSchema = createCustomerSchema.concat(
+  object({
+    isEdit: boolean().default(false),
+    position_id: num()
+      .required(messageApiError.requiredError('役職'))
+      .test(
+        'should position id valid',
+        messageApiError.valueError(),
+        (value) => {
+          if (value === -1) return true;
+          return includes(values(Position), value);
+        },
+      )
+      .label('役職'),
+    password: str()
+      .transform((v) => (v === null ? '' : v))
+      .test('should validate password', function (value) {
+        const { isEdit } = this.parent;
+
+        // If isEdit = false (create mode), password is required and must be 8-20 characters
+        if (!isEdit) {
+          if (!value) {
+            return this.createError({
+              message: messageApiError.requiredError('パスワード'),
+            });
+          }
+          if (!/^.{8,20}$/.test(value)) {
+            return this.createError({
+              message: messageFrontError.ECL021(),
+            });
+          }
+        }
+
+        // If isEdit = true (edit mode), password is optional but if provided must be 8-20 characters
+        if (isEdit && value && !/^.{8,20}$/.test(value)) {
+          return this.createError({
+            message: messageFrontError.ECL021(),
+          });
+        }
+
+        return true;
+      })
+      .label('パスワード'),
+    rePassword: str()
+      .transform((v) => (v === null ? '' : v))
+      .test('should validate rePassword', function (value) {
+        const { isEdit, password } = this.parent;
+
+        // If isEdit = true and password is provided, check if rePassword matches
+        if (isEdit && password && value !== password) {
+          return this.createError({
+            message: messageFrontError.ECL027(),
+          });
+        }
+
+        // If isEdit = false (create mode), rePassword must match password
+        if (!isEdit && value !== password) {
+          return this.createError({
+            message: messageFrontError.ECL027(),
+          });
+        }
+        return true;
+      })
+      .label('パスワード確認'),
+  }),
+);
+export type UpsertCustomerFrontType = InferType<
+  typeof upsertCustomerFrontSchema
+>;
