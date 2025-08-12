@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import isNil from 'lodash/isNil';
 import isUndefined from 'lodash/isUndefined';
 import { Ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 import { SCREEN_NAMES } from '@/constants';
 import { logError } from '@/utils/logger';
@@ -21,15 +21,14 @@ export const useErrorHandler = (
   },
 ) => {
   const router = useRouter();
-  const route = useRoute();
 
   const { setupFlashMessage, displayFlashMessage } = useFlashMessageStorage();
 
-  const goto = (target: { name: string; query?: any }) => {
+  const goto = () => {
     if (typeof option?.safeLeave === 'function') {
       option.safeLeave();
     }
-    router.push(target);
+    router.push({ name: SCREEN_NAMES.GENERAL });
   };
 
   watch(err, () => {
@@ -60,21 +59,19 @@ export const useErrorHandler = (
           text: info,
         });
       } else if (err.value.response.status === StatusCodes.NOT_FOUND) {
-        goto({ name: SCREEN_NAMES.NOT_FOUND });
+        goto();
       } else if (err.value.response.status === StatusCodes.UNAUTHORIZED) {
         if (option?.logout) return;
 
-        const redirect =
-          route.query.redirect || encodeURIComponent(route.fullPath);
-        goto({ name: SCREEN_NAMES.LOGOUT, query: { redirect } });
+        goto();
       } else if (err.value.response.status === StatusCodes.FORBIDDEN) {
-        goto({ name: SCREEN_NAMES.FORBIDDEN });
+        goto();
       } else {
-        goto({ name: SCREEN_NAMES.INTERNAL_SERVER_ERROR });
+        goto();
       }
       displayFlashMessage();
     } else {
-      goto({ name: SCREEN_NAMES.INTERNAL_SERVER_ERROR });
+      goto();
       logError(err.value);
     }
   });

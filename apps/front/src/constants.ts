@@ -1,5 +1,5 @@
 export const messages = {
-  saveSuccess: 'Save/update successfully!',
+  saveSuccess: '登録・更新・削除処理に成功しました。',
 };
 
 export const SCREEN_NAMES = {

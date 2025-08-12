@@ -21,7 +21,7 @@ export default <RouteRecordRaw[]>[
         component: () => import('@/pages/customer/customerList.vue'),
       },
       {
-        path: ':id',
+        path: ':id?',
         name: SCREEN_NAMES.CUSTOMER_ADD_EDIT_DELETE,
         meta: {
           title: 'CustomerAdd/ CustomerEdit',

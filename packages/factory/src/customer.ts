@@ -1,6 +1,7 @@
+import dayjs from 'dayjs';
 import { includes, values } from 'lodash';
 
-import { messageApiError } from './_constant';
+import { messageApiError, messageFrontError } from './_constant';
 import { flags, InferType, num, number, object, str } from './_yup';
 export enum Position {
   Administrator = 0,
@@ -64,7 +65,19 @@ export const searchCustomerSchema = object({
     )
     .label('顧客名'),
   position_id: flags().optional().label('役職'),
-  started_date_from: str().validDate().optional().label('会員登録日From'),
+  started_date_from: str()
+    .validDate()
+    .optional()
+    .test(
+      'should before started_date_to',
+      messageFrontError.ECL041(),
+      function (value) {
+        const { started_date_to } = this.parent;
+        if (!started_date_to || !value) return true;
+        return !dayjs(value).isAfter(dayjs(started_date_to));
+      },
+    )
+    .label('会員登録日From'),
   started_date_to: str().validDate().optional().label('会員登録日To'),
   limit: number()
     .typeError(messageApiError.datatypeError('取得件数', 'number'))
@@ -80,3 +93,25 @@ export const searchCustomerSchema = object({
 });
 
 export type SearchCustomerType = InferType<typeof searchCustomerSchema>;
+
+export type SearchCustomerResponseType = {
+  id: string;
+  email: string;
+  name: string;
+  started_date: string;
+  position_id: string;
+  orders: [
+    {
+      id: string;
+      item_name: string;
+      created_date: string;
+    },
+  ];
+  created_date: string;
+  updated_date: string;
+};
+
+export type SearchCustomerResponseFormatType = {
+  customer: SearchCustomerResponseType[];
+  total_count: number;
+};
