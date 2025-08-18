@@ -22,7 +22,7 @@ export const orderCSVSchema = object({
     .matches(/^\d*$/, ({ label }) => {
       return messageFrontError.ECL010(label);
     })
-    .label('注文ID'),
+    .label('ID'),
   商品名: string()
     .required(({ label }) => {
       return messageFrontError.ECL001(label);
@@ -46,24 +46,10 @@ export const orderCSVSchema = object({
     .matches(/^\d+$/, ({ label }) => {
       return messageFrontError.ECL010(label);
     })
-    .test(
-      'max-integer',
-      ({ label }) => {
-        return messageFrontError.ECL002(label, 11, 0);
-      },
-      (value) => {
-        if (!value) return true;
-        const num = parseInt(value);
-        return num <= 2147483647;
-      },
-    )
     .label('注文数量'),
   顧客ID: string()
     .required(({ label }) => {
       return messageFrontError.ECL001(label);
-    })
-    .matches(/^\d+$/, ({ label }) => {
-      return messageFrontError.ECL010(label);
     })
     .label('顧客ID'),
   Delete: string()
@@ -71,7 +57,7 @@ export const orderCSVSchema = object({
     .matches(/^[Y]?$/, ({ label }) => {
       return `${label}はYまたは空白で入力してください。`;
     })
-    .label('削除フラグ'),
+    .label('Delete'),
 });
 
 // Helper function to add row number to error messages

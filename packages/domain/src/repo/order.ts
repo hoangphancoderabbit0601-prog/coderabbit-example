@@ -66,7 +66,7 @@ export class OrderRepository extends BaseRepository {
       ];
       map(headers, (header, index) => {
         if (expectedHeaders[index] !== header) {
-          throw new errors.Argument('CSV header format is incorrect');
+          throw new errors.BadRequestError(messageFrontError.ECL045());
         }
       });
 
@@ -145,7 +145,7 @@ export class OrderRepository extends BaseRepository {
         } catch (error) {
           if (error?.name === 'ValidationError') {
             throw new errors.BadRequestError(
-              addRowNumberToError(error.message, rowNumber),
+              addRowNumberToError(error.errors.join(','), rowNumber),
             );
           } else {
             throw new errors.BadRequestError(
