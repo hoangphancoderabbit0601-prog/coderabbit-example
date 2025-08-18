@@ -326,7 +326,8 @@ const checkPermission = () => {
           <!-- Password Confirmation -->
           <div class="grid grid-cols-[130px_1fr] gap-4 items-center">
             <label class="field-label">
-              パスワード確認 <span class="text-red-500">*</span>
+              パスワード確認
+              <span v-if="!isEditMode" class="text-red-500">*</span>
             </label>
             <div class="field-input-container">
               <Password
