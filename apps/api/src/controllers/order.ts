@@ -12,6 +12,7 @@ export class OrderController extends BaseController {
     this.orderRepository = new OrderRepository(this.db);
 
     this.getOrders = this.nextWrapper(this.getOrders);
+    this.importOrders = this.nextWrapper(this.importOrders);
   }
 
   public getOrders = async (
@@ -22,5 +23,15 @@ export class OrderController extends BaseController {
     const dataSearch = OrderMapper.toOrderSearch(req.query);
     const result = await this.orderRepository.getOrders(dataSearch);
     res.json({ total_count: result.count, order: result.rows });
+  };
+
+  public importOrders = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const file = req.file as Express.Multer.File;
+    const data = await this.orderRepository.importOrders(file);
+    res.json({ data });
   };
 }

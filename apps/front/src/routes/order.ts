@@ -15,7 +15,7 @@ export default <RouteRecordRaw[]>[
         path: 'list',
         name: SCREEN_NAMES.ORDER_LIST,
         meta: {
-          title: 'OrderList',
+          title: 'Order List',
           permission: [Position.Administrator],
         },
         component: () => import('@/pages/order/order.vue'),
