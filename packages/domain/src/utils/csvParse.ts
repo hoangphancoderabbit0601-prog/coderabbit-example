@@ -1,3 +1,4 @@
+import { messageFrontError } from '@factory/_constant';
 import { OrderCSVRow } from '@factory/order';
 import { parse } from 'csv-parse';
 import fs from 'fs';
@@ -55,9 +56,9 @@ export const getCSVBody = async (filePath: string): Promise<OrderCSVRow[]> => {
       resolve(body);
     });
 
-    parser.on('error', (err) => {
+    parser.on('error', () => {
       readStream.destroy();
-      reject(new Error(`Row ${currentLine}: ${err.message}`));
+      reject(new Error(`Row ${currentLine}: ${messageFrontError.ECL045()}`));
     });
 
     readStream.on('error', (err) => {
