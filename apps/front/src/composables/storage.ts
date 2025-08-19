@@ -36,16 +36,12 @@ export const useAppStorage = createSharedComposable(() => {
     }
 
     const decoded = jwtDecode<{
-      id: number;
-      name: string;
-      positionId: number;
-      exp: number;
       [key: string]: any;
     }>(accessToken.value);
-
     return {
       id: decoded.sub,
       ...omit(decoded, 'sub', 'exp'),
+      positionId: decoded.position_id,
       expiredAt: decoded.exp * 1000,
     } as unknown as UserInfo;
   });

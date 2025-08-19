@@ -1,9 +1,7 @@
 import { errors } from '@factory';
-import { IUserInfo } from '@factory/auth';
 import { NextFunction, Request, Response } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
 
-import { verifyToken } from '../utils/jwt';
+import { JwtPayload, verifyToken } from '../utils/jwt';
 
 export default (req: Request, _res: Response, next: NextFunction) => {
   try {
@@ -13,8 +11,10 @@ export default (req: Request, _res: Response, next: NextFunction) => {
       req.user = {
         id: user.id,
         name: user.name,
-        positionId: user.positionId,
-      } as IUserInfo;
+        positionId: user.position_id,
+        email: user.email,
+        startedDate: user.started_date,
+      };
       next();
     } else {
       next(new errors.Unauthorized());

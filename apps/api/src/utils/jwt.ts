@@ -2,10 +2,12 @@ import { sign, verify } from 'jsonwebtoken';
 
 import { JWT_EXPIRATION, JWT_SECRET } from '../LoadEnv';
 
-interface JwtPayload {
-  id: number;
+export interface JwtPayload {
+  id: bigint;
+  email: string;
   name: string;
-  positionId: number;
+  started_date: string;
+  position_id: number;
 }
 
 export const signToken = (data: JwtPayload) => {
