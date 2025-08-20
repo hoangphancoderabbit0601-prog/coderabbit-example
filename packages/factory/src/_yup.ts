@@ -378,7 +378,7 @@ export const num = () =>
   yup
     .number()
     .transform((value, org) => (org === '' ? null : value))
-    .typeError(messages.typeError('${label}', '数値と"-"'));
+    .typeError(messageApiError.valueError());
 
 export const flags = () =>
   yup
