@@ -142,15 +142,15 @@ export const upsertCustomerFrontSchema = createCustomerSchema.concat(
               message: messageApiError.requiredError('パスワード'),
             });
           }
-          if (!/^.{8,20}$/.test(value)) {
+          if (!/^(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(value)) {
             return this.createError({
               message: messageFrontError.ECL021(),
             });
           }
         }
 
-        // If isEdit = true (edit mode), password is optional but if provided must be 8-20 characters
-        if (isEdit && value && !/^.{8,20}$/.test(value)) {
+        // If isEdit = true (edit mode), password is optional but if provided must be 8-20 characters and [0-9][a-z]
+        if (isEdit && value && !/^(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(value)) {
           return this.createError({
             message: messageFrontError.ECL021(),
           });
