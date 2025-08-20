@@ -21,11 +21,14 @@ class AuthController extends BaseController {
 
     res.json({
       ...user,
+
       token: {
         accessToken: signToken({
-          id: Number(user.id),
+          id: parseInt(user.id) as unknown as bigint,
           name: user.name,
-          positionId: Number(user.position_id),
+          email: user.email,
+          started_date: user.started_date,
+          position_id: Number(user.position_id),
         }),
       },
     });

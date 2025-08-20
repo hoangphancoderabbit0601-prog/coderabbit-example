@@ -14,7 +14,6 @@ export interface IUserMainAttr {
   email: string;
   password: string;
   name: string;
-  groupId: number;
   startedDate: string;
   positionId: number;
 }
