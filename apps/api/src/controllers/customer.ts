@@ -44,7 +44,7 @@ class CustomerController extends BaseController {
       updater.positionId !== Position.Administrator &&
       BigInt(updater.id) !== userId
     ) {
-      throw new errors.NotFound();
+      throw new errors.Forbidden();
     }
     const dataUpdate = CustomerMapper.toUserUpsert(req.body);
     const result = await this.customerRepository.updateCustomer(
