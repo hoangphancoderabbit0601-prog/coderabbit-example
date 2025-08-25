@@ -64,10 +64,14 @@ export const updateCustomerSchema = createCustomerSchema.concat(
     password: str()
       .optional()
       .transform((v) => (v === null ? '' : v))
-      .min(1, messageApiError.requiredError('パスワード'))
-      .max(255, ({ value, label }) =>
-        messageApiError.lengthExceeded(label, 255, value.length),
-      )
+      .test('should validate password', function (value) {
+        if (value && !/^[0-9a-z]{8,20}$/.test(value)) {
+          return this.createError({
+            message: messageFrontError.ECL021(),
+          });
+        }
+        return true;
+      })
       .label('パスワード'),
   }),
 );
