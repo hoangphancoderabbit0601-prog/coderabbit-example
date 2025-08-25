@@ -35,9 +35,14 @@ export const createCustomerSchema = object({
     .label('会員登録日'),
   password: str()
     .required(messageApiError.requiredError('パスワード'))
-    .max(255, ({ value, label }) =>
-      messageApiError.lengthExceeded(label, 255, value.length),
-    )
+    .test('should validate password', function (value) {
+      if (!/^[0-9a-z]{8,20}$/.test(value)) {
+        return this.createError({
+          message: messageFrontError.ECL021(),
+        });
+      }
+      return true;
+    })
     .label('パスワード'),
 });
 
@@ -142,7 +147,7 @@ export const upsertCustomerFrontSchema = createCustomerSchema.concat(
               message: messageApiError.requiredError('パスワード'),
             });
           }
-          if (!/^(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(value)) {
+          if (!/^(?=.*[0-9])(?=.*[a-z])[0-9a-z]{8,20}$/.test(value)) {
             return this.createError({
               message: messageFrontError.ECL021(),
             });
@@ -150,7 +155,7 @@ export const upsertCustomerFrontSchema = createCustomerSchema.concat(
         }
 
         // If isEdit = true (edit mode), password is optional but if provided must be 8-20 characters and [0-9][a-z]
-        if (isEdit && value && !/^(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(value)) {
+        if (isEdit && value && !/^[0-9a-z]{8,20}$/.test(value)) {
           return this.createError({
             message: messageFrontError.ECL021(),
           });
