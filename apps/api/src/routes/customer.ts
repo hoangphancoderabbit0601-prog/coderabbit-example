@@ -1,5 +1,6 @@
 import {
   createCustomerSchema,
+  customerIdSchema,
   Position,
   searchCustomerSchema,
   updateCustomerSchema,
@@ -22,18 +23,23 @@ export default function (db: SQLize) {
   );
 
   customerRouter.put(
-    '/:id([0-9]+)',
+    '/:id',
     validationMiddleware(updateCustomerSchema),
     customerController.updateCustomer,
   );
 
   customerRouter.delete(
-    '/:id([0-9]+)',
+    '/:id',
     authorize([Position.Administrator]),
+    validationMiddleware(customerIdSchema),
     customerController.deleteCustomer,
   );
 
-  customerRouter.get('/:id([0-9]+)', customerController.getById);
+  customerRouter.get(
+    '/:id',
+    validationMiddleware(customerIdSchema),
+    customerController.getById,
+  );
 
   customerRouter.get(
     '/',
