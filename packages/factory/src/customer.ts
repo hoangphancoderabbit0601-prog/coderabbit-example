@@ -3,6 +3,8 @@ import { includes, values } from 'lodash';
 
 import { messageApiError, messageFrontError } from './_constant';
 import { boolean, flags, InferType, num, number, object, str } from './_yup';
+import { NotFound } from './error';
+
 export enum Position {
   Administrator = 0,
   Group = 1,
@@ -44,6 +46,16 @@ export const createCustomerSchema = object({
 export type CreateCustomerType = InferType<typeof createCustomerSchema>;
 export const updateCustomerSchema = createCustomerSchema.concat(
   object({
+    id: str()
+      .test('is-valid-id', messageApiError.valueError(), (value) => {
+        if (!value) return false;
+        const numValue = Number(value);
+        if (isNaN(numValue) || !Number.isInteger(numValue) || numValue <= 0) {
+          throw new NotFound();
+        }
+        return true;
+      })
+      .label('顧客ID'),
     password: str()
       .optional()
       .transform((v) => (v === null ? '' : v))
@@ -185,3 +197,20 @@ export const upsertCustomerFrontSchema = createCustomerSchema.concat(
 export type UpsertCustomerFrontType = InferType<
   typeof upsertCustomerFrontSchema
 >;
+
+// Add customer ID validation schema
+export const customerIdSchema = object({
+  id: str()
+    .required(messageApiError.requiredError('顧客ID'))
+    .test('is-valid-id', messageApiError.valueError(), (value) => {
+      if (!value) return false;
+      const numValue = Number(value);
+      if (isNaN(numValue) || !Number.isInteger(numValue) || numValue <= 0) {
+        throw new NotFound();
+      }
+      return true;
+    })
+    .label('顧客ID'),
+});
+
+export type CustomerIdType = InferType<typeof customerIdSchema>;
