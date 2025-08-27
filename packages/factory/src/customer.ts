@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import { includes, values } from 'lodash';
+import { includes, map, values } from 'lodash';
 
 import { messageApiError, messageFrontError } from './_constant';
 import { boolean, flags, InferType, num, number, object, str } from './_yup';
-import { NotFound } from './error';
+import { Forbidden, NotFound } from './error';
 
 export enum Position {
   Administrator = 0,
@@ -85,7 +85,19 @@ export const searchCustomerSchema = object({
       messageApiError.lengthExceeded(label, 100, value.length),
     )
     .label('顧客名'),
-  position_id: flags().optional().label('役職'),
+  position_id: flags()
+    .optional()
+    .test('is valid', messageApiError.valueError(), (value) => {
+      const numbersOnly = values(Position).filter(
+        (value) => !isNaN(Number(value)),
+      );
+      map(value, (v) => {
+        const isIncluded = includes(numbersOnly, Number(v));
+        if (!isIncluded) throw new Forbidden();
+      });
+      return true;
+    })
+    .label('役職'),
   started_date_from: str()
     .validDate()
     .optional()
