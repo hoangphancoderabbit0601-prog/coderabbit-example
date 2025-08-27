@@ -40,6 +40,7 @@ export class OrderRepository extends BaseRepository {
         'deleted_date',
       ],
       offset: limit && offset ? (offset - 1) * limit : undefined,
+      order: [['order_id', 'DESC']],
       paranoid: false,
     });
     return {
