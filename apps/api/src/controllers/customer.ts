@@ -78,8 +78,8 @@ class CustomerController extends BaseController {
     const dto = CustomerMapper.toCustomerSearch(req.query);
     const data = await this.customerRepository.getCustomer(dto);
     res.json({
-      total_count: data.count,
-      customer: data.rows,
+      total_count: data.length,
+      customer: data,
     });
   };
 
