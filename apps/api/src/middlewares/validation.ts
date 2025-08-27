@@ -26,7 +26,9 @@ export function validationMiddleware(schema: AnyObjectSchema) {
       return next();
     } catch (err: any) {
       if (err instanceof NotFound) {
-        return res.status(StatusCodes.NOT_FOUND).json({ errors: err.message });
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ errors: [err.message] });
       }
       if (err instanceof Forbidden) {
         return res
