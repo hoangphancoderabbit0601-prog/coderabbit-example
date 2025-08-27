@@ -1,4 +1,4 @@
-import { NotFound } from '@factory/error';
+import { Forbidden, NotFound } from '@factory/error';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { assign } from 'lodash';
@@ -27,6 +27,11 @@ export function validationMiddleware(schema: AnyObjectSchema) {
     } catch (err: any) {
       if (err instanceof NotFound) {
         return res.status(StatusCodes.NOT_FOUND).json({ errors: err.message });
+      }
+      if (err instanceof Forbidden) {
+        return res
+          .status(StatusCodes.FORBIDDEN)
+          .json({ errors: [err.message] });
       }
       return res.status(StatusCodes.BAD_REQUEST).json({ errors: err.errors });
     }
