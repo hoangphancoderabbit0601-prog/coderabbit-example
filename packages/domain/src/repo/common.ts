@@ -1,4 +1,3 @@
-import { Position } from '@factory/customer';
 import dayjs from 'dayjs';
 import { map } from 'lodash';
 
@@ -9,19 +8,8 @@ export class CommonRepository {
     customer: Customer,
     isFindAll: boolean = true,
   ) => {
-    let positionLabel = 'Unknow label';
-    switch (customer.dataValues.position_id) {
-      case Position.Administrator:
-        positionLabel = '管理者';
-        break;
-      case Position.Group:
-        positionLabel = 'グループ管理者';
-        break;
-      case Position.User:
-        positionLabel = '一般ユーザ';
-        break;
-    }
-    customer.dataValues.position_id = positionLabel;
+    customer.dataValues.position_id =
+      customer.dataValues.position_id.toString();
     customer?.dataValues?.orders
       ? map(customer.dataValues.orders, (order) => {
           order.dataValues.id = order.dataValues.id.toString();
