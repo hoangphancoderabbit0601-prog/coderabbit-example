@@ -161,6 +161,8 @@ const checkValidate = () => {
             <Calendar
               v-model="startDateComputed"
               dateFormat="yy/mm/dd"
+              :showOtherMonths="true"
+              :selectOtherMonths="true"
               showIcon
               class="date-input"
             />
@@ -181,6 +183,8 @@ const checkValidate = () => {
               v-model="endDateComputed"
               dateFormat="yy/mm/dd"
               showIcon
+              :showOtherMonths="true"
+              :selectOtherMonths="true"
               class="date-input"
             />
             <div class="error-message-container">
