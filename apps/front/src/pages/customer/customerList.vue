@@ -79,12 +79,12 @@ const convertPositionId = (positionId: number) => {
 async function refreshData() {
   if (isReset.value) {
     backupSearchInput.value = toRaw(searchInput.value);
-    await refetch(toRaw(searchInput.value));
+    await refetch(toRaw({ ...searchInput.value, limit: PAGINATION_LIMIT }));
     listCustomer.value = result?.data?.customer || [];
+    totalRecords.value = result?.data?.total_count || 0;
     listCustomer.value.forEach((customer) => {
       customer.position_id = convertPositionId(Number(customer.position_id));
     });
-    totalRecords.value = result?.data?.total_count || 0;
     isReset.value = false;
     if (!listCustomer.value.length) {
       showFlashMessage({
@@ -99,8 +99,7 @@ async function getData() {
   backupSearchInput.value.limit = undefined;
   backupSearchInput.value.offset = undefined;
   await refetch(toRaw(backupSearchInput.value));
-  listCustomer.value = result?.data?.customer || [];
-  return listCustomer.value;
+  return result?.data?.customer || [];
 }
 
 const onPageChange = (event: { page: number }) => {
@@ -153,24 +152,40 @@ const onClickCreate = () => {
             v-if="col.field === 'name'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
+            class="text-left"
           >
             <template #body="{ data }">
-              <span
+              <p
                 v-if="userInfo?.positionId === 0"
-                class="text-blue-600 cursor-pointer hover:underline"
+                class="text-blue-600 cursor-pointer hover:underline text-center"
                 @click="onClickEdit(data.id)"
               >
                 {{ data.name }}
-              </span>
-              <span v-else>
+              </p>
+              <p v-else class="text-center">
                 {{ data.name }}
-              </span>
+              </p>
             </template>
           </Column>
+          <Column
+            v-else-if="col.field === 'email'"
+            :field="col.field"
+            :header="col.header"
+            headerClass="text-center"
+          />
+          <Column
+            v-else-if="col.field === 'started_date'"
+            :field="col.field"
+            :header="col.header"
+            headerClass="text-center"
+            class="text-center"
+          />
           <Column
             v-else-if="col.field === 'item_name'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
           >
             <template #body="{ data }">
               <span class="badge badge-info mr-1">
@@ -182,6 +197,8 @@ const onClickCreate = () => {
             v-else-if="col.field === 'created_date'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
+            class="text-center"
           >
             <template #body="{ data }">
               <span class="badge badge-info mr-1">
@@ -195,12 +212,12 @@ const onClickCreate = () => {
               </span>
             </template>
           </Column>
-
           <Column
-            v-else
-            :key="col.field"
+            v-else-if="col.field === 'position_id'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
+            class="text-left"
           />
         </template>
       </DataTable>
@@ -278,6 +295,52 @@ const onClickCreate = () => {
   max-width: 200px;
   padding: 0.5rem !important;
   vertical-align: top !important;
+}
+
+/* Table Headers Center Alignment */
+:deep(.p-datatable .p-datatable-thead th) {
+  text-align: center !important;
+}
+
+:deep(.p-datatable .p-datatable-thead th .p-column-header-content) {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+:deep(.p-datatable .p-datatable-thead th .p-column-title) {
+  text-align: center !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+:deep(.p-datatable thead th) {
+  text-align: center !important;
+}
+
+:deep(.p-datatable thead th span) {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Title Centering */
+h1.text-center {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Column Alignment Styles */
+:deep(.p-datatable .p-datatable-tbody td.text-center) {
+  text-align: center !important;
+}
+
+:deep(.p-datatable .p-datatable-tbody td.text-left) {
+  text-align: left !important;
+}
+
+:deep(.p-datatable .p-datatable-tbody td.text-right) {
+  text-align: right !important;
 }
 
 /* Specific styling for long text content */
