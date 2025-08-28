@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { messageFrontError } from '@factory/_constant';
 import {
+  Position,
   SearchCustomerResponseType,
   SearchCustomerType,
 } from '@factory/customer';
@@ -55,11 +56,30 @@ const columns = ref([
   },
 ]);
 
+const convertPositionId = (positionId: number) => {
+  let positionLabel = 'Unknow label';
+  switch (positionId) {
+    case Position.Administrator:
+      positionLabel = '管理者';
+      break;
+    case Position.Group:
+      positionLabel = 'グループ管理者';
+      break;
+    case Position.User:
+      positionLabel = '一般ユーザ';
+      break;
+  }
+  return positionLabel;
+};
+
 async function refreshData() {
   if (isReset.value) {
     backupSearchInput.value = toRaw(searchInput.value);
     await refetch(toRaw(searchInput.value));
     listCustomer.value = result?.data?.customer || [];
+    listCustomer.value.forEach((customer) => {
+      customer.position_id = convertPositionId(Number(customer.position_id));
+    });
     totalRecords.value = result?.data?.total_count || 0;
     isReset.value = false;
     if (!listCustomer.value.length) {
