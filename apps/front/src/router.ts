@@ -42,7 +42,7 @@ router.beforeEach((to, _from) => {
 
   if (auth && (!loggedIn.value || hasExpired())) {
     const redirectUrl = to.query.redirect || encodeURIComponent(to.fullPath);
-    return { name: SCREEN_NAMES.GENERAL, query: { redirectUrl } };
+    return { name: SCREEN_NAMES.LOGIN, query: { redirectUrl } };
   }
 
   if (auth && !havePermission(to.meta?.permission as number[])) {
