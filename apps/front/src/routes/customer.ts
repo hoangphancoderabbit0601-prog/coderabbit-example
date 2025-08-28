@@ -25,7 +25,7 @@ export default <RouteRecordRaw[]>[
         name: SCREEN_NAMES.CUSTOMER_ADD_EDIT_DELETE,
         meta: {
           title: 'CustomerAdd/ CustomerEdit',
-          permission: [Position.Administrator, Position.Group, Position.User],
+          permission: [Position.Administrator],
         },
         component: () => import('@/pages/customer/customerAddEditDelete.vue'),
       },
