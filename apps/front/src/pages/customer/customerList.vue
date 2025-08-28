@@ -123,6 +123,7 @@ const onClickCreate = () => {
 </script>
 
 <template>
+  <h1 class="text-2xl font-bold mb-4">Customer List</h1>
   <!-- Search Component -->
   <div class="mb-6">
     <SearchUser
