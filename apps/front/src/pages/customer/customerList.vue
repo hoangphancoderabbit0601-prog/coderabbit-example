@@ -6,6 +6,10 @@ import {
   SearchCustomerType,
 } from '@factory/customer';
 import { map, max } from 'lodash';
+import Button from 'primevue/button';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import Paginator from 'primevue/paginator';
 import { ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -120,21 +124,29 @@ const onClickCreate = () => {
 </script>
 
 <template>
-  <div>
+  <!-- Search Component -->
+  <div class="mb-6">
     <SearchUser
       v-model:searchInput="searchInput"
       v-model:isReset="isReset"
       @refresh-data="refreshData"
     />
   </div>
-  <div v-if="listCustomer.length">
+
+  <!-- Results Table with same styling as SearchUser -->
+  <div
+    v-if="listCustomer.length"
+    class="bg-white p-6 rounded-lg shadow-sm border"
+  >
     <h1 class="text-xl font-bold mb-4">検索結果</h1>
-    <div class="bg-primary-bg w-5/6 h-full rounded-lg">
+
+    <div class="overflow-x-auto">
       <DataTable
         :value="listCustomer"
         :loading="isLoading"
         showGridlines
-        tableStyle="min-width: 50rem; table-layout: fixed"
+        tableStyle="min-width: 50rem; table-layout: fixed; width: 100%;"
+        class="w-full"
       >
         <template v-for="col in columns" :key="col.field">
           <Column
@@ -192,23 +204,34 @@ const onClickCreate = () => {
           />
         </template>
       </DataTable>
-      <Paginator
-        :rows="PAGINATION_LIMIT"
-        @page="onPageChange"
-        :totalRecords="totalRecords || 0"
-        class="custom-paginator"
-      >
-      </Paginator>
+
+      <div class="mt-4">
+        <Paginator
+          :rows="PAGINATION_LIMIT"
+          @page="onPageChange"
+          :totalRecords="totalRecords || 0"
+          class="custom-paginator"
+        />
+      </div>
     </div>
-  </div>
-  <!-- Action Buttons -->
-  <div v-if="userInfo?.positionId === 0" class="flex gap-4 mt-4 p-4">
-    <Button label="作成" @click="onClickCreate" class="p-button-primary" />
-    <ExportButton
-      v-if="listCustomer.length"
-      :getData="getData"
-      filename="customers.csv"
-    />
+
+    <!-- Action Buttons inside the bordered container -->
+    <div
+      v-if="userInfo?.positionId === 0"
+      class="flex gap-4 mt-6 pt-4 border-t border-gray-200"
+    >
+      <Button
+        label="作成"
+        @click="onClickCreate"
+        class="px-6 py-2 text-sm"
+        severity="primary"
+      />
+      <ExportButton
+        v-if="listCustomer.length"
+        :getData="getData"
+        filename="customers.csv"
+      />
+    </div>
   </div>
 </template>
 

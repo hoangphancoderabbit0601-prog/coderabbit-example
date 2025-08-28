@@ -11,6 +11,7 @@ import Calendar from 'primevue/calendar';
 import Checkbox from 'primevue/checkbox';
 import CheckboxGroup from 'primevue/checkboxgroup';
 import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
 import { computed, onBeforeMount } from 'vue';
 
 import { useFormWithSchema } from '@/composables/form';
@@ -103,17 +104,19 @@ const checkValidate = () => {
     <form
       @submit.prevent="onFormSubmit"
       @focusout="checkValidate()"
-      class="space-y-4"
+      class="space-y-6"
     >
       <!-- Customer Name -->
-      <div class="flex">
-        <label class="w-20 mt-3 text-sm font-medium text-gray-700 mr-4"
+      <div class="form-row">
+        <label
+          class="w-20 text-sm font-medium text-gray-700 mr-4 flex items-center h-12"
           >顧客名</label
         >
         <div class="flex !w-full flex-col">
           <InputText
             v-model="models.name.value"
-            class="flex-1 max-w-md w-full"
+            class="flex-1 w-full h-12"
+            style="max-width: 380px"
           />
           <div class="min-h-9 max-w-full min-w-full">
             <Message
@@ -129,99 +132,126 @@ const checkValidate = () => {
       </div>
 
       <!-- Position -->
-      <div class="flex items-start">
-        <label class="w-20 text-sm font-medium text-gray-700 mr-4 mt-1"
+      <div class="form-row">
+        <label
+          class="w-20 text-sm font-medium text-gray-700 mr-4 flex items-center h-12"
           >役職</label
         >
-        <CheckboxGroup v-model="models.position_id.value">
-          <div class="flex flex-wrap gap-6">
-            <div class="flex items-center">
-              <Checkbox inputId="admin" :value="Position.Administrator" />
-              <label for="admin" class="ml-2 text-sm">管理者</label>
+        <div class="flex !w-full flex-col">
+          <CheckboxGroup v-model="models.position_id.value">
+            <div class="flex flex-wrap gap-6 items-center h-12">
+              <div class="flex items-center">
+                <Checkbox inputId="admin" :value="Position.Administrator" />
+                <label for="admin" class="ml-2 text-sm">管理者</label>
+              </div>
+              <div class="flex items-center">
+                <Checkbox inputId="group" :value="Position.Group" />
+                <label for="group" class="ml-2 text-sm">グループ管理者</label>
+              </div>
+              <div class="flex items-center">
+                <Checkbox inputId="user" :value="Position.User" />
+                <label for="user" class="ml-2 text-sm">一般ユーザ</label>
+              </div>
             </div>
-            <div class="flex items-center">
-              <Checkbox inputId="group" :value="Position.Group" />
-              <label for="group" class="ml-2 text-sm">グループ管理者</label>
-            </div>
-            <div class="flex items-center">
-              <Checkbox inputId="user" :value="Position.User" />
-              <label for="user" class="ml-2 text-sm">一般ユーザ</label>
-            </div>
+          </CheckboxGroup>
+          <div class="min-h-9 max-w-full min-w-full">
+            <!-- Empty error container for consistent spacing -->
           </div>
-        </CheckboxGroup>
+        </div>
       </div>
 
       <!-- Member Registration Date -->
-      <div class="flex items-start">
-        <label class="w-20 text-sm font-medium text-gray-700 mr-4 mt-3"
+      <div class="form-row">
+        <label
+          class="w-20 text-sm font-medium text-gray-700 mr-4 flex items-center h-12"
           >会員登録日</label
         >
-        <div class="date-range-container">
-          <div class="date-input-wrapper">
-            <Calendar
-              v-model="startDateComputed"
-              dateFormat="yy/mm/dd"
-              :showOtherMonths="true"
-              :selectOtherMonths="true"
-              showIcon
-              class="date-input"
-            />
-            <div class="error-message-container">
-              <Message
-                v-if="errors.started_date_from"
-                severity="error"
-                size="small"
-                variant="simple"
-              >
-                {{ errors.started_date_from }}
-              </Message>
+        <div class="flex !w-full flex-col">
+          <div class="date-range-container">
+            <div class="date-input-wrapper">
+              <Calendar
+                v-model="startDateComputed"
+                dateFormat="yy/mm/dd"
+                showIcon
+                :showOtherMonths="true"
+                :selectOtherMonths="true"
+                class="date-input"
+              />
+              <div class="error-message-container">
+                <Message
+                  v-if="errors.started_date_from"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                >
+                  {{ errors.started_date_from }}
+                </Message>
+              </div>
+            </div>
+            <span class="date-separator">~</span>
+            <div class="date-input-wrapper">
+              <Calendar
+                v-model="endDateComputed"
+                dateFormat="yy/mm/dd"
+                showIcon
+                :showOtherMonths="true"
+                :selectOtherMonths="true"
+                class="date-input"
+              />
+              <div class="error-message-container">
+                <Message
+                  v-if="errors.started_date_to"
+                  severity="error"
+                  size="small"
+                  variant="simple"
+                >
+                  {{ errors.started_date_to }}
+                </Message>
+              </div>
             </div>
           </div>
-          <span class="date-separator">~</span>
-          <div class="date-input-wrapper">
-            <Calendar
-              v-model="endDateComputed"
-              dateFormat="yy/mm/dd"
-              showIcon
-              :showOtherMonths="true"
-              :selectOtherMonths="true"
-              class="date-input"
-            />
-            <div class="error-message-container">
-              <Message
-                v-if="errors.started_date_to"
-                severity="error"
-                size="small"
-                variant="simple"
-              >
-                {{ errors.started_date_to }}
-              </Message>
-            </div>
+          <div class="min-h-9 max-w-full min-w-full">
+            <!-- Empty error container for consistent spacing -->
           </div>
         </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex gap-4 pt-4">
-        <Button
-          type="button"
-          label="クリア"
-          @click="clear"
-          class="px-6 py-2"
-          severity="secondary"
-        />
-        <Button
-          type="submit"
-          label="検索"
-          class="px-6 py-2"
-          severity="primary"
-        />
+      <div class="form-row">
+        <div class="w-20 mr-4"></div>
+        <!-- Empty space to align with other rows -->
+        <div class="flex gap-4">
+          <Button
+            type="button"
+            label="クリア"
+            @click="clear"
+            class="px-6 py-2 text-sm"
+            severity="secondary"
+          />
+          <Button
+            type="submit"
+            label="検索"
+            class="px-6 py-2 text-sm"
+            severity="primary"
+          />
+        </div>
       </div>
     </form>
   </div>
 </template>
 
 <style scoped>
+/* Form row consistent spacing */
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem; /* 24px consistent spacing between rows */
+}
+
+.form-row:last-child {
+  margin-bottom: 0; /* Remove margin from last row */
+}
+
 /* Date Range Container */
 .date-range-container {
   display: flex;
@@ -239,14 +269,18 @@ const checkValidate = () => {
 .date-input {
   width: 100%;
   min-width: 180px;
+  height: 3rem; /* 48px - consistent with h-12 */
 }
 
 .date-separator {
-  font-size: 0.875rem;
+  font-size: 0.875rem; /* Keep consistent with text-sm (14px) */
   color: #6b7280;
-  margin-top: 0.75rem;
+  margin-top: 1.5rem; /* Align with the center of the input fields */
   font-weight: 500;
   align-self: flex-start;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .error-message-container {
@@ -278,16 +312,20 @@ const checkValidate = () => {
 /* Calendar input styling */
 :deep(.p-calendar) {
   width: 100%;
+  height: 3rem; /* 48px - consistent with h-12 */
 }
 
 :deep(.p-calendar .p-inputtext) {
   width: 100%;
+  height: 3rem; /* 48px - consistent with h-12 */
   padding: 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   transition:
     border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;
+  font-size: 0.875rem; /* Consistent with text-sm (14px) */
 }
 
 :deep(.p-calendar .p-inputtext:focus) {
@@ -303,10 +341,39 @@ const checkValidate = () => {
   padding: 0.75rem;
   color: #6b7280;
   border-radius: 0 0.375rem 0.375rem 0;
+  height: 3rem; /* 48px - consistent with h-12 */
+  box-sizing: border-box;
 }
 
 :deep(.p-calendar .p-datepicker-trigger:hover) {
   background: #f3f4f6;
   color: #374151;
+}
+
+/* Ensure consistent text sizing across all components */
+:deep(.p-inputtext) {
+  font-size: 0.875rem; /* Consistent with text-sm (14px) */
+  height: 3rem; /* 48px - consistent with h-12 and calendar inputs */
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-sizing: border-box;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+:deep(.p-inputtext:focus) {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+:deep(.p-button .p-button-label) {
+  font-size: 0.875rem; /* Consistent with text-sm (14px) */
+}
+
+:deep(.p-message .p-message-text) {
+  font-size: 0.875rem; /* Consistent with text-sm (14px) */
 }
 </style>
