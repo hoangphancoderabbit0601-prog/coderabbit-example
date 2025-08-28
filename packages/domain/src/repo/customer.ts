@@ -107,8 +107,9 @@ export class CustomerRepository extends BaseRepository {
       ? (query.positionId = { [Op.in]: position_id })
       : '';
 
-    const { rows } = await this.model.findAndCountAll({
+    const { rows, count } = await this.model.findAndCountAll({
       where: query,
+      distinct: true,
       include: [
         {
           model: this.models.Order,
@@ -135,7 +136,7 @@ export class CustomerRepository extends BaseRepository {
       offset: limit && offset ? (offset - 1) * limit : undefined,
     });
 
-    return CommonRepository.findListCustomerResponse(rows);
+    return { rows: CommonRepository.findListCustomerResponse(rows), count };
   }
 
   public async getCustomerById(id: bigint) {
