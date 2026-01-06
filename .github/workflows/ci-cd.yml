@@ -59,25 +59,3 @@ jobs:
 
       - name: Build Front
         run: yarn build:front
-
-  deploy:
-    needs: [install, lint, build]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd ~/intern-source
-            sudo git pull origin develop
-            docker-compose down api front
-            docker-compose up --build -d
-            docker system prune -af
