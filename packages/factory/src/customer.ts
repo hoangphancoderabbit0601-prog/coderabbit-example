@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import { includes, values } from 'lodash';
+import { includes, map, values } from 'lodash';
 
 import { messageApiError, messageFrontError } from './_constant';
 import { boolean, flags, InferType, num, number, object, str } from './_yup';
-import { NotFound } from './error';
+import { Forbidden, NotFound } from './error';
 
 export enum Position {
   Administrator = 0,
@@ -37,9 +37,14 @@ export const createCustomerSchema = object({
     .label('会員登録日'),
   password: str()
     .required(messageApiError.requiredError('パスワード'))
-    .max(255, ({ value, label }) =>
-      messageApiError.lengthExceeded(label, 255, value.length),
-    )
+    .test('should validate password', function (value) {
+      if (!/^[0-9a-z]{8,20}$/.test(value)) {
+        return this.createError({
+          message: messageFrontError.ECL021(),
+        });
+      }
+      return true;
+    })
     .label('パスワード'),
 });
 
@@ -59,10 +64,14 @@ export const updateCustomerSchema = createCustomerSchema.concat(
     password: str()
       .optional()
       .transform((v) => (v === null ? '' : v))
-      .min(1, messageApiError.requiredError('パスワード'))
-      .max(255, ({ value, label }) =>
-        messageApiError.lengthExceeded(label, 255, value.length),
-      )
+      .test('should validate password', function (value) {
+        if (value && !/^[0-9a-z]{8,20}$/.test(value)) {
+          return this.createError({
+            message: messageFrontError.ECL021(),
+          });
+        }
+        return true;
+      })
       .label('パスワード'),
   }),
 );
@@ -76,7 +85,19 @@ export const searchCustomerSchema = object({
       messageApiError.lengthExceeded(label, 100, value.length),
     )
     .label('顧客名'),
-  position_id: flags().optional().label('役職'),
+  position_id: flags()
+    .optional()
+    .test('is valid', messageApiError.valueError(), (value) => {
+      const numbersOnly = values(Position).filter(
+        (value) => !isNaN(Number(value)),
+      );
+      map(value, (v) => {
+        const isIncluded = includes(numbersOnly, Number(v));
+        if (!isIncluded) throw new Forbidden();
+      });
+      return true;
+    })
+    .label('役職'),
   started_date_from: str()
     .validDate()
     .optional()
@@ -154,7 +175,7 @@ export const upsertCustomerFrontSchema = createCustomerSchema.concat(
               message: messageApiError.requiredError('パスワード'),
             });
           }
-          if (!/^(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(value)) {
+          if (!/^(?=.*[0-9])(?=.*[a-z])[0-9a-z]{8,20}$/.test(value)) {
             return this.createError({
               message: messageFrontError.ECL021(),
             });
@@ -162,7 +183,7 @@ export const upsertCustomerFrontSchema = createCustomerSchema.concat(
         }
 
         // If isEdit = true (edit mode), password is optional but if provided must be 8-20 characters and [0-9][a-z]
-        if (isEdit && value && !/^(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(value)) {
+        if (isEdit && value && !/^[0-9a-z]{8,20}$/.test(value)) {
           return this.createError({
             message: messageFrontError.ECL021(),
           });

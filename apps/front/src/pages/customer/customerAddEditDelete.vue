@@ -167,6 +167,9 @@ const checkPermission = () => {
 </script>
 
 <template>
+  <h1 class="text-2xl font-bold mb-4">
+    {{ isEditMode ? 'Customer Edit' : 'Customer Add' }}
+  </h1>
   <div class="p-6">
     <form @submit.prevent="onSubmit" class="space-y-6">
       <div class="grid grid-cols-2">
