@@ -12,13 +12,6 @@
       class="flash-message fixed top-4 transform z-50 max-w-lg w-[90%] rounded-md px-6 py-4 text-white shadow-lg border-2 border-solid transition-all"
       :class="flashClass"
     >
-      <Button
-        type="button"
-        class="absolute top-2 right-2 text-white text-sm"
-        @click.prevent="clearFlashMessage"
-      >
-        ×
-      </Button>
       <span
         class="pl-4 font-bold"
         v-if="localMessage"

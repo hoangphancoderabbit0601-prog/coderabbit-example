@@ -26,7 +26,15 @@
           <span class="text-red-500 font-bold">*</span>
         </span>
         <div class="!flex !flex-col">
-          <InputText type="text" v-bind="$field" />
+          <InputText
+            type="text"
+            v-bind="$field"
+            @blur="
+              () => {
+                onCheckValidate();
+              }
+            "
+          />
 
           <div class="min-h-[1.5rem] mt-1">
             <Message
@@ -53,6 +61,11 @@
               toggleMask
               fluid
               v-bind="$field"
+              @blur="
+                () => {
+                  onCheckValidate();
+                }
+              "
             />
 
             <div class="min-h-[2rem] mt-1">
@@ -85,12 +98,19 @@ import { useAppStorage } from '@/composables';
 import { useMutation } from '@/composables/client';
 import { useErrorHandler } from '@/composables/errorHandler';
 import { useLoading } from '@/composables/loading';
+import { useFlashMessageStorage } from '@/composables/storage';
 import { SCREEN_NAMES } from '@/constants';
 import { authService } from '@/services';
 const initialValues = ref({
   email: '',
   password: '',
 });
+
+const onCheckValidate = () => {
+  // Clear any existing flash messages/alerts when user interacts with form
+  const { clearFlashMessage } = useFlashMessageStorage();
+  clearFlashMessage();
+};
 
 const resolver = yupResolver(loginSchema);
 

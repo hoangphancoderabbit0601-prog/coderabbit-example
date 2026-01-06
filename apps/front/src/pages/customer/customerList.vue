@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { messageFrontError } from '@factory/_constant';
 import {
+  Position,
   SearchCustomerResponseType,
   SearchCustomerType,
 } from '@factory/customer';
 import { map, max } from 'lodash';
+import Button from 'primevue/button';
+import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
+import Paginator from 'primevue/paginator';
 import { ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -55,12 +60,31 @@ const columns = ref([
   },
 ]);
 
+const convertPositionId = (positionId: number) => {
+  let positionLabel = 'Unknow label';
+  switch (positionId) {
+    case Position.Administrator:
+      positionLabel = '管理者';
+      break;
+    case Position.Group:
+      positionLabel = 'グループ管理者';
+      break;
+    case Position.User:
+      positionLabel = '一般ユーザ';
+      break;
+  }
+  return positionLabel;
+};
+
 async function refreshData() {
   if (isReset.value) {
     backupSearchInput.value = toRaw(searchInput.value);
-    await refetch(toRaw(searchInput.value));
+    await refetch(toRaw({ ...searchInput.value, limit: PAGINATION_LIMIT }));
     listCustomer.value = result?.data?.customer || [];
     totalRecords.value = result?.data?.total_count || 0;
+    listCustomer.value.forEach((customer) => {
+      customer.position_id = convertPositionId(Number(customer.position_id));
+    });
     isReset.value = false;
     if (!listCustomer.value.length) {
       showFlashMessage({
@@ -75,8 +99,7 @@ async function getData() {
   backupSearchInput.value.limit = undefined;
   backupSearchInput.value.offset = undefined;
   await refetch(toRaw(backupSearchInput.value));
-  listCustomer.value = result?.data?.customer || [];
-  return listCustomer.value;
+  return result?.data?.customer || [];
 }
 
 const onPageChange = (event: { page: number }) => {
@@ -100,45 +123,70 @@ const onClickCreate = () => {
 </script>
 
 <template>
-  <div>
+  <h1 class="text-2xl font-bold mb-4">Customer List</h1>
+  <!-- Search Component -->
+  <div class="mb-6">
     <SearchUser
       v-model:searchInput="searchInput"
       v-model:isReset="isReset"
       @refresh-data="refreshData"
     />
   </div>
-  <div v-if="listCustomer.length">
+
+  <!-- Results Table with same styling as SearchUser -->
+  <div
+    v-if="listCustomer.length"
+    class="bg-white p-6 rounded-lg shadow-sm border"
+  >
     <h1 class="text-xl font-bold mb-4">検索結果</h1>
-    <div class="bg-primary-bg w-5/6 h-full rounded-lg">
+
+    <div class="overflow-x-auto">
       <DataTable
         :value="listCustomer"
         :loading="isLoading"
         showGridlines
-        tableStyle="min-width: 50rem; table-layout: fixed"
+        tableStyle="min-width: 50rem; table-layout: fixed; width: 100%;"
+        class="w-full"
       >
         <template v-for="col in columns" :key="col.field">
           <Column
             v-if="col.field === 'name'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
+            class="text-left"
           >
             <template #body="{ data }">
-              <span
+              <p
                 v-if="userInfo?.positionId === 0"
-                class="text-blue-600 cursor-pointer hover:underline"
+                class="text-blue-600 cursor-pointer hover:underline text-center"
                 @click="onClickEdit(data.id)"
               >
                 {{ data.name }}
-              </span>
-              <span v-else>
+              </p>
+              <p v-else class="text-center">
                 {{ data.name }}
-              </span>
+              </p>
             </template>
           </Column>
+          <Column
+            v-else-if="col.field === 'email'"
+            :field="col.field"
+            :header="col.header"
+            headerClass="text-center"
+          />
+          <Column
+            v-else-if="col.field === 'started_date'"
+            :field="col.field"
+            :header="col.header"
+            headerClass="text-center"
+            class="text-center"
+          />
           <Column
             v-else-if="col.field === 'item_name'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
           >
             <template #body="{ data }">
               <span class="badge badge-info mr-1">
@@ -150,6 +198,8 @@ const onClickCreate = () => {
             v-else-if="col.field === 'created_date'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
+            class="text-center"
           >
             <template #body="{ data }">
               <span class="badge badge-info mr-1">
@@ -163,32 +213,43 @@ const onClickCreate = () => {
               </span>
             </template>
           </Column>
-
           <Column
-            v-else
-            :key="col.field"
+            v-else-if="col.field === 'position_id'"
             :field="col.field"
             :header="col.header"
+            headerClass="text-center"
+            class="text-left"
           />
         </template>
       </DataTable>
-      <Paginator
-        :rows="PAGINATION_LIMIT"
-        @page="onPageChange"
-        :totalRecords="totalRecords || 0"
-        class="custom-paginator"
-      >
-      </Paginator>
+
+      <div class="mt-4">
+        <Paginator
+          :rows="PAGINATION_LIMIT"
+          @page="onPageChange"
+          :totalRecords="totalRecords || 0"
+          class="custom-paginator"
+        />
+      </div>
     </div>
-  </div>
-  <!-- Action Buttons -->
-  <div v-if="userInfo?.positionId === 0" class="flex gap-4 mt-4 p-4">
-    <Button label="作成" @click="onClickCreate" class="p-button-primary" />
-    <ExportButton
-      v-if="listCustomer.length"
-      :getData="getData"
-      filename="customers.csv"
-    />
+
+    <!-- Action Buttons inside the bordered container -->
+    <div
+      v-if="userInfo?.positionId === 0"
+      class="flex gap-4 mt-6 pt-4 border-t border-gray-200"
+    >
+      <Button
+        label="作成"
+        @click="onClickCreate"
+        class="px-6 py-2 text-sm"
+        severity="primary"
+      />
+      <ExportButton
+        v-if="listCustomer.length"
+        :getData="getData"
+        filename="customers.csv"
+      />
+    </div>
   </div>
 </template>
 
@@ -235,6 +296,52 @@ const onClickCreate = () => {
   max-width: 200px;
   padding: 0.5rem !important;
   vertical-align: top !important;
+}
+
+/* Table Headers Center Alignment */
+:deep(.p-datatable .p-datatable-thead th) {
+  text-align: center !important;
+}
+
+:deep(.p-datatable .p-datatable-thead th .p-column-header-content) {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+:deep(.p-datatable .p-datatable-thead th .p-column-title) {
+  text-align: center !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+:deep(.p-datatable thead th) {
+  text-align: center !important;
+}
+
+:deep(.p-datatable thead th span) {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Title Centering */
+h1.text-center {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Column Alignment Styles */
+:deep(.p-datatable .p-datatable-tbody td.text-center) {
+  text-align: center !important;
+}
+
+:deep(.p-datatable .p-datatable-tbody td.text-left) {
+  text-align: left !important;
+}
+
+:deep(.p-datatable .p-datatable-tbody td.text-right) {
+  text-align: right !important;
 }
 
 /* Specific styling for long text content */

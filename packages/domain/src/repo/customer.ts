@@ -109,6 +109,7 @@ export class CustomerRepository extends BaseRepository {
 
     const { rows, count } = await this.model.findAndCountAll({
       where: query,
+      distinct: true,
       include: [
         {
           model: this.models.Order,
@@ -122,7 +123,15 @@ export class CustomerRepository extends BaseRepository {
         ['startedDate', 'ASC'],
         ['id', 'ASC'],
       ],
-      attributes: ['id', 'email', 'name', 'started_date', 'position_id'],
+      attributes: [
+        'id',
+        'email',
+        'name',
+        'started_date',
+        'position_id',
+        'created_date',
+        'updated_date',
+      ],
       limit: limit ? Number(limit) : undefined,
       offset: limit && offset ? (offset - 1) * limit : undefined,
     });

@@ -81,6 +81,7 @@ refreshData();
 </script>
 
 <template>
+  <h1 class="text-2xl font-bold mb-4">Order List</h1>
   <div>
     <div class="bg-primary-bg w-full h-full rounded-lg">
       <DataTable
